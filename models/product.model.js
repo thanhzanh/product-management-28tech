@@ -10,7 +10,10 @@ const productSchema = new mongoose.Schema(
         discountPercentage: Number,
         rating: Number,
         stock: Number,
-        thumbnail: String
+        thumbnail: String,
+        status: String,
+        position: Number,
+        deleted: Boolean
     }
 );
 const Product = mongoose.model('Product', productSchema, "products"); // products: tên table trong database

@@ -22,3 +22,25 @@ if(buttonStatus.length > 0) {
         });
     });
 }
+
+// End Button Status
+
+// Form Search
+const formSearch = document.querySelector("#form-search");
+if(formSearch) {
+    formSearch.addEventListener('submit', (e) => {
+        let url = new URL(window.location.href);
+
+        e.preventDefault(); // Ngăn chặn hành vi để khi tìm kiếm không load lại trang
+        //console.log(e.target.elements.keyword.value); // Lấy ra được giá trị khi nhập vào
+
+        const keyword = e.target.elements.keyword.value;
+        if(keyword) {
+            url.searchParams.set("keyword", keyword); // url.searchParams.set set lại status phía sau ?
+        } else {
+            url.searchParams.delete("keyword"); // Nếu k có thì sẽ delete status còn lại /admin/products trên url
+        }
+
+        window.location.href = url.href;
+    })
+}

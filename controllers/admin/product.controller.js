@@ -1,26 +1,15 @@
 const Product = require('../../models/product.model');
 
+// import trạng thái hoạt động
+const filterStatusHelper = require('../../helper/filterStatus');
+
 // [GET] /admin/products
 
 module.exports.index = async (req, res) => {
 
-    let filterStatus = [
-        {
-            name: "Tất cả",
-            status: "",
-            class: ""
-        },
-        {
-            name: "Đang hoạt động",
-            status: "active",
-            class: ""
-        },
-        {
-            name: "Ngừng hoạt động",
-            status: "inactive",
-            class: ""
-        }
-    ]
+    // Gọi lại hàm filerStatus import ở trên từ file filerStatus.js
+    const filterStatus = filterStatusHelper(req.query);
+    console.log(filterStatus)
 
     // Lọc data từ database
     let find = {
@@ -38,15 +27,6 @@ module.exports.index = async (req, res) => {
 
         const regex = new RegExp(keyword, "i"); // lấy keyword người dùng nhập vào
         find.title = regex;
-    }
-
-    // Chuyển đổi trạng thái màu green
-    if(req.query.status) {
-        const index = filterStatus.findIndex(item => item.status == req.query.status);
-        filterStatus[index].class = "active";
-    } else {
-        const index = filterStatus.findIndex(item => item.status == ""); // Nếu không tìm thấy thì gán active vào Tất cả
-        filterStatus[index].class = "active";
     }
 
     const products = await Product.find(find); // Truy vấn data từ database

@@ -36,7 +36,7 @@ if(formSearch) {
 
         // const keyword = e.target.elements.keyword.value;
         const keyword = document.querySelector('.form-control').value; // lấy data input từ class
-        
+
         if(keyword) {
             url.searchParams.set("keyword", keyword); // url.searchParams.set set lại status phía sau ?
         } else {
@@ -46,3 +46,25 @@ if(formSearch) {
         window.location.href = url.href;
     })
 }
+
+// End Form Search
+
+// Pagination
+const buttonPagination = document.querySelectorAll('[button-pagination]');
+if(buttonPagination) {
+    buttonPagination.forEach(button => {
+        button.addEventListener("click", () => {
+            let url = new URL(window.location.href);
+
+            const page = button.getAttribute('button-pagination');
+
+            if(page) {
+                url.searchParams.set('page', page);
+            } else {
+                url.searchParams.delete('page');
+            }
+            window.location.href = url.href;
+        });
+    });
+}
+// End Pagination

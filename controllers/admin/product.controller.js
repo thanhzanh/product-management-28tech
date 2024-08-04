@@ -15,7 +15,7 @@ module.exports.index = async (req, res) => {
 
     // Lọc data từ database
     let find = {
-        deleted: false,
+        deleted: false
     }
 
     if(req.query.status) {
@@ -29,12 +29,36 @@ module.exports.index = async (req, res) => {
         find.title = objectSearch.regex;
     }
 
-    const products = await Product.find(find); // Truy vấn data từ database
+    // End tìm kiếm
+
+    //  Pagination: phân trang
+    let objectPagination = {
+        currentPage: 1,
+        limitItem: 4
+    }
+
+    if(req.query.page) {
+        objectPagination.currentPage = parseInt(req.query.page);
+    }
+
+    objectPagination.skip = (objectPagination.currentPage - 1)*objectPagination.limitItem;
+
+    const countProducts = await Product.countDocuments(find);
+    const totalPage = Math.ceil(countProducts/objectPagination.limitItem);
+    objectPagination.totalPage = totalPage;
+
+    // End Pagination
+
+    // Truy vấn data từ database
+    // limit: giới hạn sản phẩm
+    // skip: bỏ qua bao nhiêu sản phẩm
+    const products = await Product.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip); 
 
     res.render('admin/pages/products/index.pug', {
         pageTitle: 'Danh sách sản phẩm',
         products: products, // hiển thị ra ngoài giao diện
         filterStatus: filterStatus,
-        keyword: objectSearch.keyword
+        keyword: objectSearch.keyword,
+        pagination: objectPagination
     });
 }

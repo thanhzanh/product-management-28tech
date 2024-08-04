@@ -12,6 +12,7 @@ database.connect();
 const app = express();
 const port = process.env.PORT;
 
+// Use pug
 app.set('views', './views');
 app.set('view engine', 'pug');
 

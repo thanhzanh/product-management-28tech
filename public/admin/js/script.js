@@ -34,7 +34,9 @@ if(formSearch) {
         e.preventDefault(); // Ngăn chặn hành vi để khi tìm kiếm không load lại trang
         //console.log(e.target.elements.keyword.value); // Lấy ra được giá trị khi nhập vào
 
-        const keyword = e.target.elements.keyword.value;
+        // const keyword = e.target.elements.keyword.value;
+        const keyword = document.querySelector('.form-control').value; // lấy data input từ class
+        
         if(keyword) {
             url.searchParams.set("keyword", keyword); // url.searchParams.set set lại status phía sau ?
         } else {

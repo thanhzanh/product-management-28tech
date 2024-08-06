@@ -62,3 +62,14 @@ module.exports.index = async (req, res) => {
         pagination: objectPagination
     });
 }
+
+// [GET] /admin/products/changeStatus/:status/:id => :status. :id là router động
+
+module.exports.changeStatus = async (req, res) => {
+    console.log(req.params);
+    const status = req.params.status;
+    const id = req.params.id;
+
+    await Product.updateOne({id: id}, {status: status});
+    res.redirect('back');
+}

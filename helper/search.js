@@ -6,9 +6,9 @@ module.exports = (query) => {
 
     if(query.keyword) {
 
-        objectSearch.keyword = query.keyword;
+        objectSearch.keyword = query.keyword; // lấy yêu cầu người dùng gán vào keyword: ""
 
-        const regex = new RegExp(objectSearch.keyword, "i"); // lấy keyword người dùng nhập vào
+        const regex = new RegExp(objectSearch.keyword, "i"); // lấy keyword người dùng nhập vào, i là không phân biệt chữ hoa chữ thường
         objectSearch.regex = regex; // Nếu có regex thì thêm 1 regex vào trong objectSearch
     }
 

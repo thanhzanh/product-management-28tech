@@ -68,3 +68,67 @@ if(buttonPagination) {
     });
 }
 // End Pagination
+
+// Checkbox Multi
+const checkboxMulti = document.querySelector('[checkbox-multi]');
+if(checkboxMulti) {
+    const inputCheckAll = document.querySelector('input[name="checkall"]');
+    const inputId = document.querySelectorAll('input[name="id"]');
+    
+    inputCheckAll.addEventListener('click', () => {
+        console.log(inputCheckAll.checked);
+        if(inputCheckAll.checked) {
+            inputId.forEach(input => {
+                input.checked = true;
+            });
+        } else {
+            inputId.forEach(input => {
+                input.checked = false;
+            });
+        }
+    });
+
+    inputId.forEach(input => {
+        input.addEventListener('click', () => { 
+            const countChecked = checkboxMulti.querySelectorAll('input[name="id"]:checked').length; // Đếm số lượng ô input check
+            console.log(countChecked)
+            if(countChecked === inputId.length) {
+                inputCheckAll.checked = true;
+            } else {
+                inputCheckAll.checked = false;
+
+            }
+        })
+    })
+
+}
+// End Checkbox Multi
+
+// Form change multi
+const formChangeMulti = document.querySelector('[form-change-multi]');
+if(formChangeMulti) {
+    formChangeMulti.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const checkboxMulti = document.querySelector('[checkbox-multi]');
+        const inputsChecked = checkboxMulti.querySelectorAll('input[name="id"]:checked');
+        
+        if(inputsChecked.length > 0) {
+            const ids = [];
+            const inputsIds = formChangeMulti.querySelector('input[name="ids"]');
+            inputsChecked.forEach(input => {
+                const id = input.value;
+                ids.push(id);
+
+                
+            });
+
+            inputsIds.value = ids.join(', ');
+
+            formChangeMulti.submit();
+        } else {
+            alert('Vui lòng chọn ít nhất một ô input');
+        }
+    })
+}
+// End form change multi

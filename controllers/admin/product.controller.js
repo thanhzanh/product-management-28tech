@@ -63,7 +63,7 @@ module.exports.index = async (req, res) => {
     });
 }
 
-// [GET] /admin/products/changeStatus/:status/:id => :status. :id là router động
+// [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
 
 module.exports.changeStatus = async (req, res) => {
     console.log(req.params);
@@ -71,5 +71,27 @@ module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
 
     await Product.updateOne({id: id}, {status: status});
+    res.redirect('back');
+}
+
+// [PATCH] /admin/products/change-multi 
+
+module.exports.changeMulti = async (req, res) => {
+    const typeStatus = req.body.type;
+    const ids = req.body.ids.split(', ');
+
+    switch (typeStatus) {
+        case "active":
+            await Product.updateMany({id: {$in: ids}}, {status: "active"});
+            break;
+
+        case "inactive":
+            await Product.updateMany({id: {$in: ids}}, {status: "inactive"});
+            break;
+    
+        default:
+            break;
+    }
+    // Nếu thực thi ok redirect lại trang
     res.redirect('back');
 }

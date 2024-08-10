@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema(
         thumbnail: String,
         status: String,
         position: Number,
-        deleted: Boolean
+        deleted: Boolean,
+        deletedAt: Date
     }
 );
 const Product = mongoose.model('Product', productSchema, "products"); // products: tên table trong database

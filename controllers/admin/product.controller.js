@@ -101,7 +101,12 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
 
-    await Product.deleteOne({id:id});
+    //await Product.deleteOne({id:id}); // Xóa cứng trong database
+
+    await Product.updateOne({id:id}, { // xóa mềm, không xóa trong database
+        deleted:true,
+        deletedAt: new Date()
+    }); 
 
     // Nếu thực thi ok redirect lại trang
     res.redirect('back');

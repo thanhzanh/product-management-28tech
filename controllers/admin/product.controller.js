@@ -95,3 +95,14 @@ module.exports.changeMulti = async (req, res) => {
     // Nếu thực thi ok redirect lại trang
     res.redirect('back');
 }
+
+// [DELETE] /admin/products/delete/:id => :id là router động
+
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+
+    await Product.deleteOne({id:id});
+
+    // Nếu thực thi ok redirect lại trang
+    res.redirect('back');
+}

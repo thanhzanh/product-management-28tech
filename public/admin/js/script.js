@@ -130,9 +130,16 @@ if(formChangeMulti) {
             const inputsIds = formChangeMulti.querySelector('input[name="ids"]');
             inputsChecked.forEach(input => {
                 const id = input.value;
-                ids.push(id);
 
-                
+                if(typeChange == "change-position") {
+                    
+                    //closest('tr) input Đi ra thẻ cha tr nó
+                    const position = input.closest('tr').querySelector('input[name="position"]').value;
+
+                    ids.push(`${id}-${position}`);
+                } else {
+                    ids.push(id);
+                }             
             });
 
             inputsIds.value = ids.join(', ');

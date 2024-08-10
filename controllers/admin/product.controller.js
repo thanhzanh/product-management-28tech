@@ -52,7 +52,11 @@ module.exports.index = async (req, res) => {
     // Truy vấn data từ database
     // limit: giới hạn sản phẩm
     // skip: bỏ qua bao nhiêu sản phẩm
-    const products = await Product.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip); 
+    // sort: sắp xếp item theo position giảm dần
+    const products = await Product.find(find)
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip)
+    .sort({position: "desc"}); 
 
     res.render('admin/pages/products/index.pug', {
         pageTitle: 'Danh sách sản phẩm',
@@ -96,6 +100,20 @@ module.exports.changeMulti = async (req, res) => {
                 deleted: true,
                 deletedAt: new Date(),
             });
+            break;
+
+        case "change-position":
+            for (const item of ids) {
+                let [id, position] = item.split('-');
+
+                position = parseInt(position);
+                
+                await Product.updateOne(
+                    {id: id},
+                    {
+                        position: position
+                    });
+            }
             break;
     
         default:

@@ -9,6 +9,83 @@ const searchHelper = require('../../helper/search');
 // import pagination
 const paginationHelper = require('../../helper/pagination');
 
+// [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
+
+module.exports.changeStatus = async (req, res) => {
+    console.log(req.params);
+    const status = req.params.status;
+    const id = req.params.id;
+
+    await Product.updateOne({id: id}, {status: status});
+
+    req.flash('success', 'Cập nhật trạng thái thành công!');
+
+    res.redirect('back');
+}
+
+// [PATCH] /admin/products/change-multi 
+
+module.exports.changeMulti = async (req, res) => {
+    const typeStatus = req.body.type;
+    const ids = req.body.ids.split(', ');
+
+    switch (typeStatus) {
+        case "active":
+            await Product.updateMany({id: {$in: ids}}, {status: "active"});
+            req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
+            break;
+
+        case "inactive":
+            await Product.updateMany({id: {$in: ids}}, {status: "inactive"});
+            req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
+            break;
+
+        case "deleted-all":
+            await Product.updateMany(
+            {id: {$in: ids}},
+            {
+                deleted: true,
+                deletedAt: new Date(),
+            });
+            break;
+
+        case "change-position":
+            for (const item of ids) {
+                let [id, position] = item.split('-');
+
+                position = parseInt(position);
+                
+                await Product.updateOne(
+                    {id: id},
+                    {
+                        position: position
+                    });
+            }
+            break;
+    
+        default:
+            break;
+    }
+    // Nếu thực thi ok redirect lại trang
+    res.redirect('back');
+}
+
+// [DELETE] /admin/products/delete/:id => :id là router động
+
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+
+    //await Product.deleteOne({id:id}); // Xóa cứng trong database
+
+    await Product.updateOne({_id:id}, { // xóa mềm, không xóa trong database
+        deleted:true,
+        deletedAt: new Date()
+    }); 
+
+    // Nếu thực thi ok redirect lại trang
+    res.redirect('back');
+}
+
 // [GET] /admin/products
 
 module.exports.index = async (req, res) => {
@@ -67,74 +144,35 @@ module.exports.index = async (req, res) => {
     });
 }
 
-// [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
 
-module.exports.changeStatus = async (req, res) => {
-    console.log(req.params);
-    const status = req.params.status;
-    const id = req.params.id;
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render('admin/pages/products/create', {
+        pageTitle: 'Thêm mới sản phẩm',
+    });
+};
 
-    await Product.updateOne({id: id}, {status: status});
-    res.redirect('back');
-}
+// [POST] /admin/products/create
+module.exports.createPost = async (req, res) => {
 
-// [PATCH] /admin/products/change-multi 
+    // Ép kiểu qua cho đúng data type database
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
 
-module.exports.changeMulti = async (req, res) => {
-    const typeStatus = req.body.type;
-    const ids = req.body.ids.split(', ');
+    if(req.body.position == "") {
+        const countProducts = await Product.countDocuments();
+        req.body.position = countProducts + 1;
+    } else {
+        req.body.position = parseInt(req.body.position);
+    } 
 
-    switch (typeStatus) {
-        case "active":
-            await Product.updateMany({id: {$in: ids}}, {status: "active"});
-            break;
-
-        case "inactive":
-            await Product.updateMany({id: {$in: ids}}, {status: "inactive"});
-            break;
-
-        case "deleted-all":
-            await Product.updateMany(
-            {id: {$in: ids}},
-            {
-                deleted: true,
-                deletedAt: new Date(),
-            });
-            break;
-
-        case "change-position":
-            for (const item of ids) {
-                let [id, position] = item.split('-');
-
-                position = parseInt(position);
-                
-                await Product.updateOne(
-                    {id: id},
-                    {
-                        position: position
-                    });
-            }
-            break;
+    console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
     
-        default:
-            break;
-    }
-    // Nếu thực thi ok redirect lại trang
-    res.redirect('back');
-}
+    // Save data vào db
+    const product = new Product(req.body);
+    await product.save();
 
-// [DELETE] /admin/products/delete/:id => :id là router động
-
-module.exports.deleteItem = async (req, res) => {
-    const id = req.params.id;
-
-    //await Product.deleteOne({id:id}); // Xóa cứng trong database
-
-    await Product.updateOne({id:id}, { // xóa mềm, không xóa trong database
-        deleted:true,
-        deletedAt: new Date()
-    }); 
-
-    // Nếu thực thi ok redirect lại trang
-    res.redirect('back');
-}
+    // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
+    res.redirect('/admin/products');
+};

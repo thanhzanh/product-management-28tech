@@ -16,7 +16,7 @@ module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
 
-    await Product.updateOne({id: id}, {status: status});
+    await Product.updateOne({_id: id}, {status: status});
 
     req.flash('success', 'Cập nhật trạng thái thành công!');
 
@@ -31,7 +31,7 @@ module.exports.changeMulti = async (req, res) => {
 
     switch (typeStatus) {
         case "active":
-            await Product.updateMany({id: {$in: ids}}, {status: "active"});
+            await Product.updateMany({_id: {$in: ids}}, {status: "active"});
             req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
             break;
 
@@ -42,7 +42,7 @@ module.exports.changeMulti = async (req, res) => {
 
         case "deleted-all":
             await Product.updateMany(
-            {id: {$in: ids}},
+            {_id: {$in: ids}},
             {
                 deleted: true,
                 deletedAt: new Date(),
@@ -56,7 +56,7 @@ module.exports.changeMulti = async (req, res) => {
                 position = parseInt(position);
                 
                 await Product.updateOne(
-                    {id: id},
+                    {_id: id},
                     {
                         position: position
                     });
@@ -154,6 +154,8 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
+    console.log(req.file);
+    
 
     // Ép kiểu qua cho đúng data type database
     req.body.price = parseInt(req.body.price);
@@ -166,6 +168,8 @@ module.exports.createPost = async (req, res) => {
     } else {
         req.body.position = parseInt(req.body.position);
     } 
+
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
 
     console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
     

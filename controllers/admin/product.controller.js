@@ -185,17 +185,48 @@ module.exports.createPost = async (req, res) => {
 // [GET] /admin/products/edit
 module.exports.edit = async (req, res) => {
 
-    console.log(req.params.id);
+    try {
+        console.log(req.params.id);
 
-    const find = {
-        deleted: false,
-        _id: req.params.id
+        const find = {
+            deleted: false,
+            _id: req.params.id,
+        }
+        
+        const product = await Product.findOne(find);
+    
+        res.render('admin/pages/products/edit', {
+            pageTitle: 'Chỉnh sửa sản phẩm',
+            product: product
+        });
+    } catch (error) {
+        req.flash('error', 'Sản phẩm không tồn tại!');
+        res.redirect('/admin/products');
+    }
+};
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editPatch = async (req, res) => {
+
+    const id = req.params.id;
+    // Ép kiểu qua cho đúng data type database
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.stock = parseInt(req.body.stock);
+    req.body.position = parseInt(req.body.position);
+
+    if(req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
     }
 
-    const product = await Product.findOne(find);
-   
-    res.render('admin/pages/products/edit', {
-        pageTitle: 'Chỉnh sửa sản phẩm',
-        product: product
-    });
+    try {
+        req.flash('success', 'Cập nhật sản phẩm thành công!');
+        await Product.updateOne({_id:id}, req.body);
+    } catch (error) {
+        
+    }
+
+    // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
+    res.redirect('back');    
+    
 };

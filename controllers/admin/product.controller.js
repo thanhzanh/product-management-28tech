@@ -155,7 +155,6 @@ module.exports.create = async (req, res) => {
 // [POST] /admin/products/create
 module.exports.createPost = async (req, res) => {
     console.log(req.file);
-    
 
     // Ép kiểu qua cho đúng data type database
     req.body.price = parseInt(req.body.price);
@@ -169,7 +168,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     } 
 
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
+    if(req.file) {
+        req.body.thumbnail = `/uploads/${req.file.filename}`;
+    }
 
     console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
     

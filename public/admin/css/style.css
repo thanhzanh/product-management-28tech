@@ -88,3 +88,18 @@
     cursor: pointer;
 }
 /* End Show alert */
+
+/* Upload image */
+.image-preview {
+    width: 150px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.image-preview[src=""] {
+    display: none;
+}
+/* End upload image */

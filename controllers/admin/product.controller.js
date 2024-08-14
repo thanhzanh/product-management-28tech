@@ -181,3 +181,21 @@ module.exports.createPost = async (req, res) => {
     // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
     res.redirect('/admin/products');
 };
+
+// [GET] /admin/products/edit
+module.exports.edit = async (req, res) => {
+
+    console.log(req.params.id);
+
+    const find = {
+        deleted: false,
+        _id: req.params.id
+    }
+
+    const product = await Product.findOne(find);
+   
+    res.render('admin/pages/products/edit', {
+        pageTitle: 'Chỉnh sửa sản phẩm',
+        product: product
+    });
+};

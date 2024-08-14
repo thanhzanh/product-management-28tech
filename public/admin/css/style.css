@@ -26,6 +26,13 @@
     left: 0;
 }
 
+.admin {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
 .body .main {
     margin: 15px;
     position: relative;
@@ -39,6 +46,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    margin-top: 10px;
 }
 
 .sider .inner-menu ul li a {

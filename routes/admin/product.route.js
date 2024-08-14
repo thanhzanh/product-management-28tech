@@ -24,4 +24,6 @@ router.post(
     validate.createPost,
     controller.createPost);
 
+router.get('/edit/:id', controller.edit);
+
 module.exports = router;

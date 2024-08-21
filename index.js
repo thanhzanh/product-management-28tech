@@ -29,13 +29,13 @@ app.use(flash());
 // End flash
 
 // Use pug
-app.set('views', './views');
+app.set('views',`${__dirname}/views`);
 app.set('view engine', 'pug');
 
 // App Local Variables: tạo ra biến toàn cục
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-app.use(express.static('public'));
+app.use(express.static(`${__dirname}/public`));
 
 // Route
 route(app);

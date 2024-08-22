@@ -126,6 +126,18 @@ module.exports.index = async (req, res) => {
 
     // End Pagination
 
+    // Sort
+    let sort = {};
+
+    // req.query.sortKey, req.query.sortValue tự đặt trên url bên admin
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+        sort.position = "desc";
+    }
+    // End Sort
+
+
     // Truy vấn data từ database
     // limit: giới hạn sản phẩm
     // skip: bỏ qua bao nhiêu sản phẩm
@@ -133,7 +145,7 @@ module.exports.index = async (req, res) => {
     const products = await Product.find(find)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip)
-    .sort({position: "desc"}); 
+    .sort(sort); 
 
     res.render('admin/pages/products/index.pug', {
         pageTitle: 'Danh sách sản phẩm',

@@ -3,13 +3,14 @@ const slug = require('mongoose-slug-updater');
 
 mongoose.plugin(slug);
 
-const productSchema = new mongoose.Schema(
+const productCategorySchema = new mongoose.Schema(
     {       
         title: String,
+        parent_id: {
+            type: String,
+            default: false
+        },
         description: String,
-        price: Number,
-        discountPercentage: Number,
-        stock: Number,
         thumbnail: String,
         status: String,
         position: Number,
@@ -23,11 +24,11 @@ const productSchema = new mongoose.Schema(
             default: false
         },
         deletedAt: Date
-    }, 
+    },  
     {
         timestamps: true
     }
 );
-const Product = mongoose.model('Product', productSchema, "products"); // products: tên table trong database
+const ProductCategory = mongoose.model('ProductCategory', productCategorySchema, "products-category"); // products-category: tên table trong database
 
-module.exports = Product;
+module.exports = ProductCategory;

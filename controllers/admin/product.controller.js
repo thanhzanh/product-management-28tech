@@ -1,5 +1,7 @@
 const Product = require('../../models/product.model');
 
+const systemConfig = require('../../config/system');
+
 // import trạng thái hoạt động
 const filterStatusHelper = require('../../helper/filterStatus');
 
@@ -187,7 +189,7 @@ module.exports.createPost = async (req, res) => {
     await product.save();
 
     // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
-    res.redirect('/admin/products');
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
 
 // [GET] /admin/products/edit
@@ -209,7 +211,7 @@ module.exports.edit = async (req, res) => {
         });
     } catch (error) {
         req.flash('error', 'Sản phẩm không tồn tại!');
-        res.redirect('/admin/products');
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 };
 
@@ -260,6 +262,6 @@ module.exports.detail = async (req, res) => {
             product: product
         });
     } catch (error) {
-        res.redirect('/admin/products');
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 };

@@ -34,12 +34,10 @@ module.exports.changeMulti = async (req, res) => {
     switch (typeStatus) {
         case "active":
             await Product.updateMany({_id: {$in: ids}}, {status: "active"});
-            req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
             break;
 
         case "inactive":
             await Product.updateMany({id: {$in: ids}}, {status: "inactive"});
-            req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
             break;
 
         case "deleted-all":
@@ -149,9 +147,10 @@ module.exports.index = async (req, res) => {
     .skip(objectPagination.skip)
     .sort(sort); 
 
+    // hiển thị ra ngoài giao diện
     res.render('admin/pages/products/index.pug', {
         pageTitle: 'Danh sách sản phẩm',
-        products: products, // hiển thị ra ngoài giao diện
+        products: products, 
         filterStatus: filterStatus,
         keyword: objectSearch.keyword,
         pagination: objectPagination

@@ -51,8 +51,8 @@ if(buttonDelete.length > 0) {
                 formDeleteItem.submit();
 
             }
-        })
-    })
+        });
+    });
 }
 
 // End Button delete

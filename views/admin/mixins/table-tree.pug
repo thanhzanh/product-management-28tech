@@ -8,7 +8,7 @@ mixin table-tree(items, level = 1)
                     name="id"
                     value=p.id
                 )
-            td #{index + 1}
+            td #{p.index}
             td 
                 img(src=p.thumbnail, alt= p.title width="100px" heigh="auto")
             td #{prefix} #{p.title}

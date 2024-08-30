@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-mongoose.plugin(slug);
-
 const roleSchema = new mongoose.Schema(
     {       
         title: String,
@@ -20,6 +18,6 @@ const roleSchema = new mongoose.Schema(
         timestamps: true
     }
 );
-const Role = mongoose.model('Role', productSchema, "roles"); // roles: tên table trong database
+const Role = mongoose.model('Role', roleSchema, "roles"); // roles: tên table trong database
 
 module.exports = Role;

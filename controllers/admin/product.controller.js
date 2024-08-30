@@ -1,5 +1,7 @@
 const Product = require('../../models/product.model');
 
+const ProductCategory = require('../../models/products-category.model');
+
 const systemConfig = require('../../config/system');
 
 // import trạng thái hoạt động
@@ -10,6 +12,9 @@ const searchHelper = require('../../helper/search');
 
 // import pagination
 const paginationHelper = require('../../helper/pagination');
+
+// import createTree
+const createTreeHelper = require('../../helper/createTree');
 
 // [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
 
@@ -160,8 +165,17 @@ module.exports.index = async (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+
+    // Lấy danh sách danh mục in ra giao diện
+    let find = {deleted: false};
+
+    const category = await ProductCategory.find(find);
+
+    const newCategory = createTreeHelper.treeChildren(category);
+
     res.render('admin/pages/products/create', {
         pageTitle: 'Thêm mới sản phẩm',
+        category: newCategory
     });
 };
 

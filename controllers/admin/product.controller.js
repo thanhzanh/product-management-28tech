@@ -191,7 +191,7 @@ module.exports.createPost = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/products`);
 };
 
-// [GET] /admin/products/edit
+// [GET] /admin/products/edit/:id
 module.exports.edit = async (req, res) => {
 
     try {

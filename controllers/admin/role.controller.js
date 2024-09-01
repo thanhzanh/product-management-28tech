@@ -76,3 +76,82 @@ module.exports.editPatch = async (req, res) => {
     }
     
 }
+
+// [GET] /admin/roles/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const findDetail = {_id: id, deleted: false};
+
+        const data = await Role.findOne(findDetail);        
+        
+        res.render('admin/pages/roles/detail.pug', {
+            pageTitle: 'Chi tiết nhóm quyền',
+            data: data
+        });
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/roles`);
+    }
+    
+}
+
+// [DELETE] /admin/roles/delete/:id
+module.exports.delete = async (req, res) => {
+    const id = req.params.id;
+
+    // Xóa cứng(database)
+    // await Role.deleteOne({_id: id}, 
+    //     {
+    //     deleted: true,
+    //     deletedAt: new Date()
+    // });
+    
+    // Xóa data(xóa mềm)
+    await Role.updateOne(
+        {_id: id},
+        {
+            deleted: true,
+            deletedAt: new Date()
+        }
+    );
+    
+    res.redirect('back');
+}
+
+// [GET] /admin/roles/permissions
+module.exports.permissions = async (req, res) => {
+    let find = {
+        deleted: false
+    }
+
+    const records = await Role.find(find);
+
+    res.render('admin/pages/roles/permissions.pug', {
+        pageTitle: 'Phân quyền',
+        records: records
+    });
+    
+}
+
+// [PATCH] /admin/roles/permissions
+module.exports.permissionsPatch = async (req, res) => {
+    try {
+        // Ép kiểu về từ JSON => []
+        const permissions = JSON.parse(req.body.permissions)
+        
+        // Duyệt qua từng phần tử permissions
+        for (const item of permissions) {
+            const id = item.id;
+            const permission = item.permissions;
+
+            // Update database
+            await Role.updateOne({_id: id}, {permissions: permission});
+        }
+        res.flash("success", "Cập nhật phân quyền thành công!");
+
+        res.redirect('back');
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/roles/permissions`);
+    }
+}

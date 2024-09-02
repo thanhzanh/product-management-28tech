@@ -1,0 +1,23 @@
+extend ../../layouts/default.pug 
+
+block main 
+     
+    if(record.title)
+        h1(class="mb-4") Danh mục: #{record.title}
+
+    if(record.description)
+        div(class="mb-4") Mô tả: !{record.description}
+    else 
+        div(class="mb-4") Mô tả: Trống
+
+    if(record.status)
+        div(class="mb-4") Trạng thái: 
+            if(record.status == "active")
+                span(class="badge badge-success") Hoạt động
+            if(record.status == "inactive")
+                span(class="badge badge-danger") Dừng hoạt động
+
+    a(
+        href=`${prefixAdmin}/products-category/edit/${record.id}`
+        class="btn btn-warning btn-sm"  
+    ) Chỉnh sửa

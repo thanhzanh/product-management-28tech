@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+
 require('dotenv').config();
 
 const route = require('./routes/client/index.route');
@@ -25,8 +26,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Flash
 app.use(cookieParser('STUDSDAF23KAD7K'));
-app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(session({
+  cookie: { maxAge: 60000 },
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(flash());
+
+
 // End flash
 
 // TinyMCE

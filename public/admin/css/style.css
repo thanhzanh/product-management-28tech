@@ -63,9 +63,9 @@
 /* Show alert */
 [show-alert] {
     position: fixed;
-    top: 50%;
-    right: -900px;
-    z-index: 1;
+    top: 80px;
+    right: 15px;
+    z-index: 999;
 }
 
 [show-alert].alert-hidden {
@@ -76,7 +76,7 @@
 
 @keyframes alert-hidden {
     from {
-        right: -900px;
+        right: 15px;
     }
     to {
         right: -100%;

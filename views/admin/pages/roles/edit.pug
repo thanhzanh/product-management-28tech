@@ -2,38 +2,39 @@ extend ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
+    if(role.permissions.includes("roles-edit"))
 
-    h1(class="mb-4") Chỉnh sửa nhóm quyền
+        h1(class="mb-4") Chỉnh sửa nhóm quyền
 
-    +alert-success(5000)
+        +alert-success(5000)
 
-    form(
-        action=`${prefixAdmin}/roles/edit/${data.id}?_method=PATCH`
-        method='POST'
-    )
-        div(class='form-group')
-            label(for='title') Tiêu đề
-            input(
-                type='text'
-                class='form-control'
-                id='title'
-                name='title'
-                required
-                value=data.title
-            )
+        form(
+            action=`${prefixAdmin}/roles/edit/${data.id}?_method=PATCH`
+            method='POST'
+        )
+            div(class='form-group')
+                label(for='title') Tiêu đề
+                input(
+                    type='text'
+                    class='form-control'
+                    id='title'
+                    name='title'
+                    required
+                    value=data.title
+                )
 
-        div(class='form-group')
-            label(for='description') Mô tả
-            input(
-                class='form-control'
-                id='description'
-                name='description'
-                value=data.description
-            )
+            div(class='form-group')
+                label(for='description') Mô tả
+                input(
+                    class='form-control'
+                    id='description'
+                    name='description'
+                    value=data.description
+                )
 
-        div(class='form-group')
-            button(
-                type='submit'
-                class='btn btn-primary'
-            ) Cập nhật
-            
+            div(class='form-group')
+                button(
+                    type='submit'
+                    class='btn btn-primary'
+                ) Cập nhật
+                

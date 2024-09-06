@@ -21,37 +21,61 @@ mixin table-tree(items, level = 1)
                     name="position"
                 )
             td
-                if(p.status === "active")
-                    a(
-                        href="javascript:;"
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-success"
-                    ) Hoạt động
+                if(role.permissions.includes("products-category-edit"))
+                    if(p.status === "active")
+                        a(
+                            href="javascript:;"
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        a(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
                 else 
-                    a(
-                        href="javascript:;" 
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-danger"
-                    ) Dừng hoạt động
+                    if(p.status === "active")
+                        span(
+                                href="javascript:;" 
+                                data-status= p.status 
+                                data-id= p.id
+                                class="badge badge-success"
+                            ) Hoạt động
+                    else 
+                        span(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
 
             td 
-                a(
-                    href=`${prefixAdmin}/products-category/detail/${p.id}`
-                    class="btn btn-secondary btn-sm"  
-                ) Chi tiết
-                a(
-                    href=`${prefixAdmin}/products-category/edit/${p.id}`
-                    class="btn btn-warning btn-sm"  
-                ) Sửa 
-                button(
-                    class="btn btn-danger btn-sm ml-1"
-                    button-delete
-                    data-id=p.id
-                ) Xóa
+                if(role.permissions.includes("products-category-view"))
+                    a(
+                        href=`${prefixAdmin}/products-category/detail/${p.id}`
+                        class="btn btn-secondary btn-sm"  
+                    ) Chi tiết
+
+                if(role.permissions.includes("products-category-edit"))
+                    a(
+                        href=`${prefixAdmin}/products-category/edit/${p.id}`
+                        class="btn btn-warning btn-sm"  
+                    ) Sửa 
+                else 
+                    a(
+                        class="btn btn-warning btn-sm"  
+                    ) Sửa 
+                if(role.permissions.includes("products-category-delete"))
+                    button(
+                        class="btn btn-danger btn-sm ml-1"
+                        button-delete
+                        data-id=p.id
+                    ) Xóa
         
         if(p.children && p.children.length > 0)
                 +table-tree(p.children, level + 1)

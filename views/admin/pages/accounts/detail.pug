@@ -2,42 +2,44 @@ extend ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
-    h1(class="mb-4") Chi tiết tài khoản tài khoản 
+    if(role.permissions.includes("accounts-view"))
 
-    if(data.fullName)
-        div(class="mb-4") Họ và tên: <b> #{data.fullName} </b>
+        h1(class="mb-4") Chi tiết tài khoản tài khoản 
 
-    if(data.email)
-        div(class="mb-4") Email: <b> #{data.email} </b>
+        if(data.fullName)
+            div(class="mb-4") Họ và tên: <b> #{data.fullName} </b>
 
-    if(data.phone)
-        div(class="mb-4") Số điện thoại: <b> #{data.phone} </b>
+        if(data.email)
+            div(class="mb-4") Email: <b> #{data.email} </b>
 
-    if(data.role_id)
-        div(class="mb-4") 
-            each item in role
-                if(data.role_id == item._id)
-                    span Quyền: <b> #{item.title} </b>
+        if(data.phone)
+            div(class="mb-4") Số điện thoại: <b> #{data.phone} </b>
 
-    if(data.avatar)
-        div(class="mb-4")
-            span Ảnh đại diện <br>
-            img(
-                src=data.avatar
-                width="100px"
-            )
-    if(data.status)
-        div(class="mb-4") 
-            span Trạng thái: 
-            if(data.status == "active")
-                span(class="badge badge-success") Hoạt động
-            if(data.status == "inactive")
-                span(class="badge badge-danger") Dừng hoạt động
+        if(data.role_id)
+            div(class="mb-4") 
+                each item in role
+                    if(data.role_id == item._id)
+                        span Quyền: <b> #{item.title} </b>
 
-    a(
-        href=`${prefixAdmin}/accounts/edit/${data.id}`
-        class="btn btn-outline-success"
-        ) Chỉnh sửa tài khoản
-        
+        if(data.avatar)
+            div(class="mb-4")
+                span Ảnh đại diện <br>
+                img(
+                    src=data.avatar
+                    width="100px"
+                )
+        if(data.status)
+            div(class="mb-4") 
+                span Trạng thái: 
+                if(data.status == "active")
+                    span(class="badge badge-success") Hoạt động
+                if(data.status == "inactive")
+                    span(class="badge badge-danger") Dừng hoạt động
 
-    script(src="/admin/js/script.js") 
+        a(
+            href=`${prefixAdmin}/accounts/edit/${data.id}`
+            class="btn btn-outline-success"
+            ) Chỉnh sửa tài khoản
+            
+
+        script(src="/admin/js/script.js") 

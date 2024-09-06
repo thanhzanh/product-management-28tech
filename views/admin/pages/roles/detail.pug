@@ -1,14 +1,16 @@
 extend ../../layouts/default.pug
 
 block main 
+    if(role.permissions.includes("roles-view"))
 
-    if(data.title)
-        div(class="mb-4") Quyền: #{data.title}
+        if(data.title)
+            div(class="mb-4") Quyền: #{data.title}
 
-    if(data.description)
-        div(class="mb-4") Mô tả: #{data.description}
-    
-    a(
-        href=`${prefixAdmin}/roles/edit/${data.id}`
-        class="btn btn-warning btn-sm"  
-    ) Chỉnh sửa
+        if(data.description)
+            div(class="mb-4") Mô tả: #{data.description}
+        
+        if(role.permissions.includes("roles-edit"))      
+            a(
+                href=`${prefixAdmin}/roles/edit/${data.id}`
+                class="btn btn-warning btn-sm"  
+            ) Chỉnh sửa

@@ -148,7 +148,7 @@ module.exports.permissionsPatch = async (req, res) => {
             // Update database
             await Role.updateOne({_id: id}, {permissions: permission});
         }
-        res.flash("success", "Cập nhật phân quyền thành công!");
+        req.flash("success", "Cập nhật phân quyền thành công!");
 
         res.redirect('back');
     } catch (error) {

@@ -34,7 +34,7 @@ if(buttonDelete.length > 0) {
 
     buttonDelete.forEach(button => {
         button.addEventListener('click', () => {
-            const isConfirm = confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');
+            const isConfirm = confirm('Bạn có chắc chắn muốn xóa tài khoản này?');
 
             if(isConfirm) {
                 const id = button.getAttribute('data-id');

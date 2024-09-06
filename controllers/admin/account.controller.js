@@ -34,7 +34,6 @@ module.exports.index = async (req, res) => {
 }
 
 // [GET] /admin/accounts/create
-
 module.exports.create = async (req, res) => {
 
     const roles = await Role.find({ deleted: false });
@@ -46,7 +45,6 @@ module.exports.create = async (req, res) => {
 }
 
 // [POST] /admin/accounts/create
-
 module.exports.createPost = async (req, res) => {
     // Check email tồn tại hay chưa
     const emailExist = await Account.findOne({
@@ -70,7 +68,6 @@ module.exports.createPost = async (req, res) => {
 }
 
 // [GET] /admin/accounts/edit/:id
-
 module.exports.edit = async (req, res) => {
     let find = {
         _id: req.params.id,
@@ -95,7 +92,6 @@ module.exports.edit = async (req, res) => {
 
 
 // [PATCH] /admin/accounts/edit/:id
-
 module.exports.editPatch = async (req, res) => {
     const id = req.params.id;
 
@@ -119,7 +115,63 @@ module.exports.editPatch = async (req, res) => {
         // Update database
         await Account.updateOne({_id: id}, req.body);
 
+        req.flash("success", "Cập nhật tài khoản thành công");
+
         res.redirect('back');
     }
     
+}
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+
+    try {
+        const status = req.params.status;
+        const id = req.params.id;
+
+        await Account.updateOne({_id: id}, {status: status});
+
+        req.flash("success", "Cập nhật trạng thái thành công");
+        
+        res.redirect("back");
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+        
+    }
+
+}
+
+// [GET] /admin/accounts/detail/:id
+module.exports.detail = async (req, res) => {
+
+    const id = req.params.id;
+    let find = {_id: id};
+
+    // Trả về Role
+    const role = await Role.find({deleted: false});
+
+    const data = await Account.findOne(find);
+    
+    res.render("admin/pages/accounts/detail", {
+        pageTitle: "Chi tiết tài khoản",
+        data: data,
+        role: role
+    });
+}
+
+// [GET] /admin/accounts/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        // Xóa cứng
+        await Account.deleteOne({ _id: id });
+
+        req.flash("success", "Xóa tài khoản thành công");
+
+        res.redirect('back');
+    } catch (error) {
+        req.flash("error", "Xóa tài khoản thất bại");
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+    }
 }

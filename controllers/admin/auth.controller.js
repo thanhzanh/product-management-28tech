@@ -4,9 +4,13 @@ const systemConfig = require('../../config/system');
 
 // [GET] /admin/auth/login
 module.exports.login = (req, res) => {
-    res.render('admin/pages/auth/login.pug', {
-        pageTitle: 'Trang đăng nhập'
-    });
+    if(req.cookies.token) {
+        res.redirect(`${systemConfig.prefixAdmin}/dashboard`);
+    } else {
+        res.render('admin/pages/auth/login.pug', {
+            pageTitle: 'Trang đăng nhập'
+        });
+    }
 }
 
 // [GET] /admin/auth/login
@@ -22,8 +26,8 @@ module.exports.loginPost = async (req, res) => {
 
     if(!user) {
         req.flash("error", "Email không tồn tại");
-        return res.redirect("back");
-        // return;
+        res.redirect("back");
+        return;
     }
 
     if(md5(password) != user.password) {
@@ -38,8 +42,9 @@ module.exports.loginPost = async (req, res) => {
         return;
     }
     
+    // Khi đăng nhập lưu cookie token, sau khi đăng xuất thì xóa đi token
     res.cookie("token", user.token);
-
+    
     res.redirect(`${systemConfig.prefixAdmin}/dashboard`);
 }
 

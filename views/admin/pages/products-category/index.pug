@@ -2,12 +2,16 @@ extend ../../layouts/default.pug
 include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug
 include ../../mixins/sort.pug
+include ../../mixins/alert.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/table-tree.pug
 
 
 
 block main
+
+    +alert-error(5000)
+    +alert-success(5000)
     
     h1 Danh mục sản phẩm
 

@@ -15,6 +15,8 @@ const controller = require('../../controllers/admin/account.controller');
 
 router.get('/', controller.index);
 
+router.patch('/change-status/:status/:id', controller.changeStatus);
+
 router.get('/create', controller.create);
 
 router.post(
@@ -34,5 +36,8 @@ router.patch('/edit/:id',
     controller.editPatch
 );
 
+router.get('/detail/:id', controller.detail);
+
+router.delete('/delete/:id', controller.deleteItem);
 
 module.exports = router;

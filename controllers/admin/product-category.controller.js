@@ -101,6 +101,8 @@ module.exports.changeStatus = async (req, res) => {
 
     await ProductCategory.updateOne({_id: id}, {status: status});
 
+    req.flash("success", "Cập nhật trạng thái thành công");
+
     res.redirect('back');
     
 };
@@ -166,6 +168,8 @@ module.exports.deleteItem = async (req, res) => {
         deleted:true,
         deletedAt: new Date()
     }); 
+
+    req.flash("success", "Xóa danh mục sản phẩm thành công");
 
     // Nếu thực thi ok redirect lại trang
     res.redirect('back');

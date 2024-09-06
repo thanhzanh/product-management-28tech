@@ -2,9 +2,12 @@ extend ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main 
-    h1(class="mb-4") Cập nhật tài khoản 
+
+    +alert-success(5000)
 
     +alert-error(5000)
+
+    h1(class="mb-4") Cập nhật tài khoản 
 
     if(roles) 
         form(

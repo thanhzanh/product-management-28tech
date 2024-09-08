@@ -19,7 +19,6 @@ const paginationHelper = require('../../helper/pagination');
 const createTreeHelper = require('../../helper/createTree');
 
 // [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
-
 module.exports.changeStatus = async (req, res) => {
     console.log(req.params);
     const status = req.params.status;
@@ -33,7 +32,6 @@ module.exports.changeStatus = async (req, res) => {
 }
 
 // [PATCH] /admin/products/change-multi 
-
 module.exports.changeMulti = async (req, res) => {
     const typeStatus = req.body.type;
     const ids = req.body.ids.split(', ');
@@ -52,7 +50,11 @@ module.exports.changeMulti = async (req, res) => {
             {_id: {$in: ids}},
             {
                 deleted: true,
-                deletedAt: new Date(),
+                // deletedAt: new Date(),
+                deletedBy: { // Xóa bởi ai và thời gian xóa
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date()
+                }
             });
             break;
 
@@ -78,7 +80,6 @@ module.exports.changeMulti = async (req, res) => {
 }
 
 // [DELETE] /admin/products/delete/:id => :id là router động
-
 module.exports.deleteItem = async (req, res) => {
     const id = req.params.id;
 
@@ -86,7 +87,10 @@ module.exports.deleteItem = async (req, res) => {
 
     await Product.updateOne({_id:id}, { // xóa mềm, không xóa trong database
         deleted:true,
-        deletedAt: new Date()
+        deletedBy: { // Xóa bởi ai và thời gian xóa
+            account_id: res.locals.user.id,
+            deletedAt: new Date()
+        }
     }); 
 
     // Nếu thực thi ok redirect lại trang
@@ -94,7 +98,6 @@ module.exports.deleteItem = async (req, res) => {
 }
 
 // [GET] /admin/products
-
 module.exports.index = async (req, res) => {
 
     // Gọi lại hàm filerStatus import ở trên từ file filerStatus.js

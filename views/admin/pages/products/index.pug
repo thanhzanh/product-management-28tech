@@ -5,6 +5,7 @@ include ../../mixins/pagination.pug
 include ../../mixins/formChangeMulti.pug
 include ../../mixins/alert.pug
 include ../../mixins/sort.pug
+include ../../mixins/momentDateTime.pug
 
 block main
     if(role.permissions.includes("products-view"))
@@ -59,6 +60,7 @@ block main
                                 th Giá
                                 th Vị trí
                                 th Trạng thái
+                                th Người tạo
                                 th Hành động
                         tbody 
                             each p, index in products
@@ -102,6 +104,10 @@ block main
                                                     class="badge badge-danger"
                                                 ) Dừng hoạt động
 
+                                    td 
+                                        p #{p.accountFullName}
+                                        +momentDate(p.createdBy.createdAt)
+                                    
                                     td 
                                         if(role.permissions.includes("products-view"))
                                             a(

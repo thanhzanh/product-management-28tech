@@ -2,6 +2,8 @@ const Product = require('../../models/product.model');
 
 const ProductCategory = require('../../models/products-category.model');
 
+const Account = require('../../models/account.model');
+
 const systemConfig = require('../../config/system');
 
 // import trạng thái hoạt động
@@ -152,6 +154,18 @@ module.exports.index = async (req, res) => {
     .skip(objectPagination.skip)
     .sort(sort); 
 
+    // Lấy ra tên người tạo
+    for(const product of products) {
+        const user = await Account.findOne({
+            _id: product.createdBy.account_id
+        });
+
+        if(user) {
+            // Nếu có user thì thêm key accountFullName trong product
+            product.accountFullName = user.fullName;
+        }
+    }
+
     // hiển thị ra ngoài giao diện
     res.render('admin/pages/products/index.pug', {
         pageTitle: 'Danh sách sản phẩm',
@@ -196,6 +210,12 @@ module.exports.createPost = async (req, res) => {
     } 
 
     console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
+
+    //Lấy ra người tạo là ai
+    // res.locals.user => toàn cục
+    req.body.createdBy = {
+        account_id: res.locals.user.id
+    };
     
     // Save data vào db
     const product = new Product(req.body);

@@ -22,11 +22,18 @@ const productSchema = new mongoose.Schema(
             slug: "title",
             unique: true // duy nhat khong trung slug
         },
+        createdBy: { // Tạo bởi ai và thời gian tạo
+            account_id: String,
+            createdAt: {
+                type: Date,
+                default: Date.now // Dùng 1 lần duy nhất
+            }
+        },
         deleted: {
             type: Boolean,
             default: false
         },
-        deletedAt: Date
+        deletedAt: Date // thời gian xóa
     }, 
     {
         timestamps: true

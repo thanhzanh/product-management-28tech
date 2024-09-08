@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const moment = require('moment');
 
 require('dotenv').config();
 
@@ -32,8 +33,6 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash());
-
-
 // End flash
 
 // TinyMCE
@@ -46,6 +45,9 @@ app.set('view engine', 'pug');
 
 // App Local Variables: tạo ra biến toàn cục
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+
+// Local moment
+app.locals.moment = moment;
 
 app.use(express.static(`${__dirname}/public`));
 

@@ -61,6 +61,7 @@ block main
                                 th Vị trí
                                 th Trạng thái
                                 th Người tạo
+                                th Người cập nhật
                                 th Hành động
                         tbody 
                             each p, index in products
@@ -106,7 +107,14 @@ block main
 
                                     td 
                                         p #{p.accountFullName}
-                                        +momentDate(p.createdBy.createdAt)
+                                        +momentDateTime(p.createdBy.createdAt)
+
+                                    td 
+                                        - const updatedBy = p.updatedBy[p.updatedBy.length-1];
+                                        if(updatedBy)
+                                            p #{updatedBy.accountFullName}
+                                            p
+                                                +momentDateTime(updatedBy.updatedAt)
                                     
                                     td 
                                         if(role.permissions.includes("products-view"))

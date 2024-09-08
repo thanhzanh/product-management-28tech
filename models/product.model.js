@@ -38,6 +38,12 @@ const productSchema = new mongoose.Schema(
             account_id: String,
             deletedAt: Date
         },
+        updatedBy: [ // Tạo bởi ai và thời gian tạo vì có thể nhiều người nên dùng mảng
+            { 
+                account_id: String,
+                updatedAt: Date
+            }
+        ],
     }, 
     {
         timestamps: true

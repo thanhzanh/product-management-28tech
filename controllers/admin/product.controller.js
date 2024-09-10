@@ -322,7 +322,8 @@ module.exports.editPatch = async (req, res) => {
         await Product.updateOne(
             { _id: id }, 
             { // ...bỏ qua phần tử trước đó, sau đó push thêm vào []
-                ...req.body, $push: { updatedBy : updatedByUser }
+                ...req.body, 
+                $push: { updatedBy : updatedByUser }
             }
         );
 
@@ -333,7 +334,7 @@ module.exports.editPatch = async (req, res) => {
     }
 
     // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
-    res.redirect('back');    
+    res.redirect(`${systemConfig.prefixAdmin}/products`);   
     
 };
 

@@ -39,14 +39,13 @@ block main
                         +select-tree(category, 1, product.product_category_id)
 
             div(class='form-group')
-                label(for='desciption') Mô tả
+                label(for='description') Mô tả
                 textarea(
                     type='text'
                     class='form-control textarea-mce'
-                    id='desciption'
-                    name='desciption'
+                    id='description'
+                    name='description'
                     rows='5'
-                    value=product.description
                 ) #{product.description}
             div(class='form-group')
                 label(for='price') Giá

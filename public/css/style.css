@@ -56,12 +56,12 @@
 
 .product-item .inner-image {
     width: 100%;
-    aspect-ratio: 4/3;
     border-bottom: 1px solid #ddd;
+    text-align: center;
 }
 
 .product-item .inner-image img {
-    width: 100%;
+    width: 160px;
     height: 100%;
     object-fit: cover;
 }

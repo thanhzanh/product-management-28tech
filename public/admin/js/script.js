@@ -44,7 +44,7 @@ if(formSearch) {
         }
 
         window.location.href = url.href;
-    })
+    });
 }
 
 // End Form Search
@@ -70,11 +70,12 @@ if(buttonPagination) {
 // End Pagination
 
 // Checkbox Multi
-const checkboxMulti = document.querySelector('[checkbox-multi]');
+const checkboxMulti = document.querySelector('[checkbox-multi]'); // lấy ra table
 if(checkboxMulti) {
     const inputCheckAll = document.querySelector('input[name="checkall"]');
     const inputId = document.querySelectorAll('input[name="id"]');
     
+    // tick vào ô nào thì ô đó checked true lên
     inputCheckAll.addEventListener('click', () => {
         console.log(inputCheckAll.checked);
         if(inputCheckAll.checked) {
@@ -88,6 +89,7 @@ if(checkboxMulti) {
         }
     });
 
+    // tick các input đầy đủ thì ô tick tất cả đc tick và ngược lại
     inputId.forEach(input => {
         input.addEventListener('click', () => { 
             const countChecked = checkboxMulti.querySelectorAll('input[name="id"]:checked').length; // Đếm số lượng ô input check

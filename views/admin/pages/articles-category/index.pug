@@ -1,0 +1,74 @@
+extend ../../layouts/default.pug 
+include ../../mixins/alert.pug 
+include ../../mixins/filterStatus.pug 
+include ../../mixins/search.pug 
+include ../../mixins/table-tree.pug 
+include ../../mixins/formChangeMulti.pug 
+include ../../mixins/sort.pug 
+
+block main 
+
+    +alert-success(3000)
+    +alert-error(3000)
+
+    h1 Trang danh mục bài viết
+
+    .card-mb-3 
+    .card-header 
+    .card-body 
+        .row 
+            .col-6 
+                +filterStatus(filterStatus)
+            .col-6 
+                +search(keyword)
+
+    .card-mb-3 
+    .card-header 
+    .card-body 
+        .row 
+            .col-3 
+                +sortCategory()
+
+    .card.mb-3 
+        .card-header Danh sách 
+        .card-body 
+            .row 
+                .col-8 
+                    +form-change-multi(`${prefixAdmin}/articles-category/change-multi?_method=PATCH`)
+                .col-4 
+                    a(
+                        href=`${prefixAdmin}/articles-category/create`
+                        class="btn btn-outline-success "
+                    ) + Thêm mới danh mục
+
+            table(
+                class="table table-hover table-sm"
+                checkbox-multi
+            )
+                thead 
+                    tr 
+                        th 
+                            input(type="checkbox" name="checkall")
+                        th STT 
+                        th Hình ảnh 
+                        th Tiêu đề
+                        th Vị trí
+                        th Trạng thái 
+                        th Hành động
+
+                tbody 
+                    +table-tree-articles-category(records)
+
+    //- Change status
+    form(
+        action=""
+        method="POST"
+        data-path=`${prefixAdmin}/articles-category/change-status`
+        id="form-change-status"
+    )
+
+
+                
+    script(src="/admin/js/script.js") 
+    script(src="/admin/js/product.js") 
+                

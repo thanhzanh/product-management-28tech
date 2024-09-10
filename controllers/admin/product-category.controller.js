@@ -10,7 +10,6 @@ const createTreeHelper = require('../../helper/createTree');
 
 
 // [GET] /admin/products-category
-
 module.exports.index = async (req, res) => {
 
     const filterStatus = filterStatusHelper(req.body);
@@ -57,7 +56,6 @@ module.exports.index = async (req, res) => {
 }
 
 // [GET] /admin/products-category/create
-
 module.exports.create = async (req, res) => {
     let find = {
         deleted: false

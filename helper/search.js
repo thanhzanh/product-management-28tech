@@ -4,6 +4,7 @@ module.exports = (query) => {
         keyword: ""
     }
 
+    // Tìm thấy được keyword
     if(query.keyword) {
 
         objectSearch.keyword = query.keyword; // lấy yêu cầu người dùng gán vào keyword: ""

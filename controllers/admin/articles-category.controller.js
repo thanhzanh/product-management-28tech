@@ -205,3 +205,18 @@ module.exports.detail = async (req, res) => {
     res.redirect(`${systemConfig.prefixAdmin}/articles-category`);
   }
 };
+
+// [DELETE] /admin/article-category/delete/:status/:id
+module.exports.deleteItem = async (req, res) => {
+  const id = req.params.id;
+
+  // Thay đổi change status trong database
+  await ArticlesCategory.updateOne({ _id: id }, {
+    deleted: true,
+    deletedAt: new Date()
+  });
+
+  req.flash("success", "Xóa danh mục bài viết thành công");
+
+  res.redirect("back");
+};

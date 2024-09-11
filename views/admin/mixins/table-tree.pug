@@ -83,6 +83,7 @@ mixin table-tree(items, level = 1)
 //- table-tree cho articles-category
 mixin table-tree-articles-category(items, level = 1)
     each p, index in items
+        //- dùng để phân cấp cha con
         - const prefix = Array(level + 1).join("-- ")
         tr 
             td 
@@ -93,8 +94,9 @@ mixin table-tree-articles-category(items, level = 1)
                 )
             td #{p.index}
             td 
-                img(src=p.thumbnail, alt= p.title width="100px" heigh="auto")
-            td #{prefix} #{p.title}
+                img(src=p/thumbnail alt= p.title width="100px" heigh="auto")
+            //- #{prefix} dùng để phân cấp cha con
+            td #{prefix} #{p.title} 
             td 
                 input(
                     type="number"

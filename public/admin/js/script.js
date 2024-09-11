@@ -75,7 +75,7 @@ if(checkboxMulti) {
     const inputCheckAll = document.querySelector('input[name="checkall"]');
     const inputId = document.querySelectorAll('input[name="id"]');
     
-    // tick vào ô nào thì ô đó checked true lên
+    // tick vào ô nào thì ô đó checked true 
     inputCheckAll.addEventListener('click', () => {
         console.log(inputCheckAll.checked);
         if(inputCheckAll.checked) {

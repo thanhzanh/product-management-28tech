@@ -1,4 +1,4 @@
-extend ../../layouts/default.pug 
+extend ../../layouts/default.pug
 include ../../mixins/alert.pug 
 include ../../mixins/filterStatus.pug 
 include ../../mixins/search.pug 
@@ -7,7 +7,7 @@ include ../../mixins/formChangeMulti.pug
 include ../../mixins/sort.pug 
 
 block main 
-
+    div #{records}
     +alert-success(3000)
     +alert-error(3000)
 
@@ -57,7 +57,7 @@ block main
                         th Hành động
 
                 tbody 
-                    +table-tree-articles-category(records)
+                    +table-tree-articles-category(records, 1)
 
     //- Change status
     form(
@@ -68,7 +68,7 @@ block main
     )
 
 
-                
-    script(src="/admin/js/script.js") 
-    script(src="/admin/js/product.js") 
+    script(src="/admin/js/script.js")
+    script(src="/admin/js/product.js")
+    script(src="/admin/js/role.js")
                 

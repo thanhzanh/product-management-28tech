@@ -1,0 +1,22 @@
+extend ../../layouts/default.pug 
+
+block main 
+    if(data.title)
+        h1(class="mb-4") Danh mục: #{data.title}
+
+    if(data.description)
+        div(class="mb-4") Mô tả: !{data.description}
+    else 
+        div(class="mb-4") Mô tả: Trống
+
+    if(data.status)
+        div(class="mb-4") Trạng thái: 
+            if(data.status == "active")
+                span(class="badge badge-success") Hoạt động
+            if(data.status == "inactive")
+                span(class="badge badge-danger") Dừng hoạt động
+    
+    a(
+        href=`${prefixAdmin}/artilces-category/edit/${data.id}`
+        class="btn btn-warning btn-sm"  
+    ) Chỉnh sửa

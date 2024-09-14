@@ -97,6 +97,34 @@ block main
                     tr 
                         td(colspan="4")
                             b Danh mục bài viết  
+                    tr(data-name="articles-view")
+                        td Xem 
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+                    
+                    tr(data-name="articles-create")
+                        td Thêm mới
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+
+                    tr(data-name="articles-edit")
+                        td Chỉnh sửa
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+
+                    tr(data-name="articles-delete")
+                        td Xóa 
+                        each item in records
+                            td(class="text-center")
+                                input(type="checkbox")
+
+                    //- Danh sách bài viết
+                    tr 
+                        td(colspan="4")
+                            b Danh sách bài viết  
                     tr
                         td Xem 
                         each item in records

@@ -8,9 +8,11 @@ block main
 
     h1(class="mb-4") Chỉnh sửa danh mục bài viết 
 
+    //- enctype="multipart/form-data" dùng để khi upload ảnh thay đổi
     form(
         action=`${prefixAdmin}/articles-category/edit/${data.id}?_method=PATCH`
         method="POST"
+        enctype="multipart/form-data"
     ) 
         div(classs="form-group")
             label(for="title") Tiêu đề

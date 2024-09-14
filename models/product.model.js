@@ -34,7 +34,7 @@ const productSchema = new mongoose.Schema(
             default: false
         },
         // deletedAt: Date // thời gian xóa
-        deletedBy: { // Tạo bởi ai và thời gian tạo
+        deletedBy: { // Xóa bởi ai và thời gian xóa
             account_id: String,
             deletedAt: Date
         },

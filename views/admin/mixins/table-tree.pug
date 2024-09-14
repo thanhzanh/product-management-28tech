@@ -94,7 +94,7 @@ mixin table-tree-articles-category(items, level = 1)
                 )
             td #{p.index}
             td 
-                img(src=p/thumbnail alt= p.title width="100px" heigh="auto")
+                img(src=p.thumbnail, alt= p.title width="100px" heigh="auto")
             //- #{prefix} dùng để phân cấp cha con
             td #{prefix} #{p.title} 
             td 
@@ -122,6 +122,13 @@ mixin table-tree-articles-category(items, level = 1)
                         button-change-status
                         class="badge badge-danger"
                     ) Dừng hoạt động
+            td 
+                p #{p.accountFullName}
+            td 
+                - const updateByUser = p.updatedBy[p.updatedBy.length - 1];
+                if(updateByUser) 
+                    p #{updateByUser.accountFullName}
+                    p #{moment(updateByUser.updatedAt).format('DD/MM/YYYY HH:mm')}
             td 
                 a(
                     href=`${prefixAdmin}/articles-category/detail/${p.id}`

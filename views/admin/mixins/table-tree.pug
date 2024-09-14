@@ -55,6 +55,13 @@ mixin table-tree(items, level = 1)
                         ) Dừng hoạt động
 
             td 
+                p #{p.accountFullName}
+            td 
+                - const updateByUser = p.updatedBy[p.updatedBy.length - 1];
+                if(updateByUser) 
+                    p #{updateByUser.accountFullName}
+                    p #{moment(updateByUser.updatedAt).format('DD/MM/YYYY HH:mm')}
+            td 
                 if(role.permissions.includes("products-category-view"))
                     a(
                         href=`${prefixAdmin}/products-category/detail/${p.id}`

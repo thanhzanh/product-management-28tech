@@ -1,4 +1,6 @@
 const ProductCategory = require('../../models/products-category.model');
+const Account = require('../../models/account.model');
+
 const systemConfig = require('../../config/system');
 
 const filterStatusHelper = require('../../helper/filterStatus');
@@ -45,6 +47,30 @@ module.exports.index = async (req, res) => {
     const records = await ProductCategory.find(find)
     .sort(sort);
 
+    // Lấy ra người tạo và người thay đổi và giờ thay đổi
+    for (const record of records) {
+        // lấy ra user
+        const user = await Account.findOne({
+            _id: record.createdBy.account_id
+        });
+
+        // nếu có user thì add them record 1 key accountFullName
+        if (user) {
+            record.accountFullName = user.fullName;
+        }
+
+        // Logs người cập nhật và thời gian cập nhật
+        const updateBy = record.updatedBy[record.updatedBy.length-1];
+        if(updateBy) {
+            const updatedByUser = await Account.findOne({
+                _id: updateBy.account_id
+            });
+
+            updateBy.accountFullName = updatedByUser.fullName
+        }
+        
+    }
+
     const newRecords = createTreeHelper.treeChildren(records);    
 
     res.render('admin/pages/products-category/index.pug', {
@@ -82,9 +108,16 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     } 
 
+    // Logs người tạo
+    req.body.createdBy = {
+        account_id: res.locals.user.id
+    }
+
     // Save data vào db
     const record = new ProductCategory(req.body);
     await record.save();
+
+    req.flash("success", "Tạo mới danh mục sản phẩm thành công");
 
     // Sau khi tạo mới thành công trả về trang danh sách sản phẩm
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
@@ -97,7 +130,19 @@ module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     const id = req.params.id;
 
-    await ProductCategory.updateOne({_id: id}, {status: status});
+      // Lưu logs người chỉnh sửa
+    const updatedByUser = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
+
+    await ProductCategory.updateOne(
+        {_id: id},
+        {
+            status: status,
+            $push: { updatedBy: updatedByUser }
+        }
+    );
 
     req.flash("success", "Cập nhật trạng thái thành công");
 
@@ -112,14 +157,33 @@ module.exports.changeMulti = async (req, res) => {
     const typeStatus = req.body.type;
     const ids = req.body.ids.split(', ');
 
+    // Lưu logs người chỉnh sửa
+    const updatedByUser = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
+
     switch (typeStatus) {
         case "active":
-            await ProductCategory.updateMany({_id: {$in: ids}}, {status: "active"});
+            await ProductCategory.updateMany(
+                {_id: {$in: ids}}, 
+                {
+                    status: "active",
+                    $push: { updatedBy: updatedByUser }
+
+                }
+            );
             req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);       
             break;
 
         case "inactive":
-            await ProductCategory.updateMany({_id: {$in: ids}}, {status: "inactive"});
+            await ProductCategory.updateMany(
+                {_id: {$in: ids}}, 
+                {
+                    status: "inactive",
+                    $push: { updatedBy: updatedByUser }
+                }
+            );
             req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
             break;
 
@@ -127,10 +191,12 @@ module.exports.changeMulti = async (req, res) => {
             await ProductCategory.updateMany(
             {_id: {$in: ids}},
             {
-                deleted: true,
-                deletedAt: new Date(),
+                deletedBy: {
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date()
+                }
             });
-            req.flash('success', `Cập nhật trạng thái thành công $${ids.length} sản phẩm!`);
+            req.flash('success', `Xóa danh mục sản phẩm thành công`);
             break;
 
         case "change-position":
@@ -142,9 +208,12 @@ module.exports.changeMulti = async (req, res) => {
                 await ProductCategory.updateOne(
                     {_id: id},
                     {
-                        position: position
+                        position: position,
+                        $push: { updatedBy: updatedByUser }
+
                     });
             }
+            req.flash('success', `Thay đổi vị trí thành công`);
             break;
     
         default:
@@ -163,8 +232,11 @@ module.exports.deleteItem = async (req, res) => {
     //await Product.deleteOne({id:id}); // Xóa cứng trong database
 
     await ProductCategory.updateOne({_id:id}, { // xóa mềm, không xóa trong database
-        deleted:true,
-        deletedAt: new Date()
+        deleted: true,
+        deletedBy: {
+            account_id: res.locals.user.id,
+            deletedAt: new Date()
+        }
     }); 
 
     req.flash("success", "Xóa danh mục sản phẩm thành công");
@@ -209,13 +281,30 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/products-category/edit/:id
 
 module.exports.editPatch = async (req, res) => {  
-    const id = req.params.id;
-
-    req.body.position = parseInt(req.body.position); // ép kiểu chuổi sang int
     
     try {
-        await ProductCategory.updateOne({_id: id}, req.body);
+        const id = req.params.id;
+
+        req.body.position = parseInt(req.body.position); // ép kiểu chuổi sang int
+    
+        // Lưu logs người chỉnh sửa
+        const updatedByUser = {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+        }
+
+        await ProductCategory.updateOne(
+            {_id: id}, 
+            {
+                ...req.body,
+                $push: { updatedBy: updatedByUser }
+            }
+        );
+        
+        req.flash("success", "Chỉnh sửa danh mục sản phẩm thành công");
+
     } catch (error) {
+        req.flash("success", "Chỉnh sửa danh mục sản phẩm thất bại");
         
     }
 

@@ -23,7 +23,24 @@ const productCategorySchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        deletedAt: Date
+        // deletedAt: Date,
+        deletedBy: { // Xóa bởi ai và thời gian xóa
+            account_id: String,
+            deletedAt: Date
+        },
+        createdBy: { // Tạo bởi ai và thời gian tạo
+            account_id: String,
+            createdAt: {
+                type: Date,
+                default: Date.now // Dùng 1 lần duy nhất
+            }
+        },
+        updatedBy: [ // Chỉnh sửa bởi ai và thời gian Chỉnh sửa vì có thể nhiều người nên dùng mảng
+            { 
+                account_id: String,
+                updatedAt: Date
+            }
+        ],
     },  
     {
         timestamps: true

@@ -12,7 +12,13 @@ const roleSchema = new mongoose.Schema(
             type: Boolean,
             default: false
         },
-        deletedAt: Date
+        deletedAt: Date,
+        updatedBy: [ // Chỉnh sửa bởi ai và thời gian Chỉnh sửa vì có thể nhiều người nên dùng mảng
+            { 
+                account_id: String,
+                updatedAt: Date
+            }
+        ],
     }, 
     {
         timestamps: true

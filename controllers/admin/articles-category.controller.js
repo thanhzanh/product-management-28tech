@@ -59,7 +59,6 @@ module.exports.index = async (req, res) => {
 
       // Thêm key accountFullName vào trong trường updatedBy
       updateBy.accountFullName = userUpdated.fullName;
-      console.log(updateBy.accountFullName);
     }
   }
 

@@ -1,4 +1,6 @@
 const Role = require('../../models/role.model');
+const Account = require('../../models/account.model');
+
 
 const systemConfig = require('../../config/system');
 
@@ -8,6 +10,21 @@ module.exports.index = async (req, res) => {
     let find = {deleted: false};
 
     const records = await Role.find(find);
+
+    // Logs Người chỉnh sửa
+    for (const record of records) {
+        
+        const updatedBy = record.updatedBy[record.updatedBy.length - 1];
+        if(updatedBy) {
+            const updatedByUser = await Account.findOne({
+                _id: updatedBy.account_id
+            });
+
+            // Thêm key accountFullName vào trong trường updatedBy
+            updatedBy.accountFullName = updatedByUser.fullName
+        }
+      
+    }
 
     res.render('admin/pages/roles/index.pug', {
         pageTitle: 'Nhóm quyền',
@@ -48,8 +65,6 @@ module.exports.edit = async (req, res) => {
         };
         
         const data = await Role.findOne(find);
-
-        console.log(data);
         
         res.render('admin/pages/roles/edit.pug', {
             pageTitle: 'Chỉnh sửa nhóm quyền',
@@ -65,8 +80,20 @@ module.exports.edit = async (req, res) => {
 module.exports.editPatch = async (req, res) => {
     try {
         const id = req.params.id;
+
+        // Lưu logs người chỉnh sửa
+        const updatedByUser = {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+        }
     
-        const data = await Role.updateOne({_id: id}, req.body);
+        // Update db
+        await Role.updateOne({_id: id}, 
+            {
+                ...req.body,
+                $push: { updatedBy: updatedByUser }
+            }
+        );
 
         req.flash("success", "Cập nhật nhóm quyền thành công!");
         

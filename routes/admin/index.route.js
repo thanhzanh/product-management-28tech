@@ -16,6 +16,8 @@ const authRoutes = require('./auth.route');
 
 const articleCategoryRoutes = require('./articles-category.route');
 
+const articleRoutes = require('./article.route');
+
 
 module.exports = (app) => {
     //Lấy đường dẫn admin bên config/system
@@ -38,5 +40,7 @@ module.exports = (app) => {
     app.use(PATH_ADMIN + '/auth', authRoutes);
 
     app.use(PATH_ADMIN + '/articles-category', authMiddleware.requireAuth, articleCategoryRoutes);
+
+    app.use(PATH_ADMIN + '/articles', authMiddleware.requireAuth, articleRoutes);
 
 }

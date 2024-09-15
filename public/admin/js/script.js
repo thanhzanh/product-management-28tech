@@ -238,3 +238,32 @@ if(sort) {
 // End Sort
 
 
+// Button delete   
+const buttonDelete = document.querySelectorAll('[button-delete]');
+if(buttonDelete.length > 0) {
+
+    // Lấy form
+    const formDeleteItem = document.querySelector('#form-delete-item');
+    const path=formDeleteItem.getAttribute('data-path');
+
+    buttonDelete.forEach(button => {
+        button.addEventListener('click', () => {
+            const isConfirm = confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');
+
+            if(isConfirm) {
+                const id = button.getAttribute('data-id');
+                
+                // const action = path + `/${id}`;
+                const action = `${path}/${id}?_method=DELETE`;
+
+                formDeleteItem.action=action;
+
+                formDeleteItem.submit();
+
+            }
+        });
+    });
+}
+
+// End Button delete
+

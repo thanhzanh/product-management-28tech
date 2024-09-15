@@ -56,6 +56,16 @@ module.exports.index = async (req, res) => {
         if(createdByUser) {
             record.accountFullName = createdByUser.fullName
         }
+
+        //---------------- Logs Người tạo ----------------
+        const updateBy = record.updatedBy[record.updatedBy.length-1];
+        if(updateBy) {
+            const updatedByUser = await Account.findOne({
+                _id: updateBy.account_id
+            });
+
+            updateBy.accountFullName = updatedByUser.fullName
+        }
     }
 
 
@@ -106,4 +116,81 @@ module.exports.createPost = async (req, res) => {
     req.flash("success", "Tạo mới danh sách sản phẩm thành công");
     
     res.redirect(`${systemConfig.prefixAdmin}/articles`);
+}
+
+// [GET] /admin/articles/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+    
+        const articles = await Article.findOne(find);
+    
+        const category = await ArticleCategory.find({ deleted: false });
+        // In danh mục bài viết ra ngoài giao diện create bài viết
+        const newCategory = createTreeHelper.treeChildren(category);
+        
+        res.render('admin/pages/articles/edit.pug', {
+            pageTitle: 'Chỉnh sửa bài viết',
+            articles: articles,
+            category: newCategory
+        });
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/articles`);     
+    }
+}
+
+// [PATCH] /admin/articles/edit/:id
+module.exports.editPatch = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        // Người chỉnh sửa
+        const updatedByUser = {
+            account_id: res.locals.user.id,
+            updatedAt: new Date()
+        }
+
+        await Article.updateOne(
+            {
+                _id: id
+            },
+            {
+                ...req.body,
+                $push: { updatedBy: updatedByUser }
+            }
+        );
+
+        req.flash("success", "Cập nhật danh sách bài viết thành công");
+
+    } catch (error) {
+        req.flash("error", "Cập nhật danh sách bài viết thất bại");
+    }
+    
+    res.redirect(`${systemConfig.prefixAdmin}/articles`);
+}
+
+// [DELETE] /admin/articles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        await Article.updateOne(
+            { _id: id},
+            {
+                deleted: true,
+                deletedBy: { // Logs Người xóa
+                    account_id: res.locals.user.id,
+                    deletedAt: new Date()    
+                }
+            }
+        );
+        req.flash("success", "Xóa bài viết thành công");
+        res.redirect("back");
+    } catch (error) {
+        req.flash("error", "Xóa bài viết thất bại");
+        res.redirect(`${systemConfig.prefixAdmin}/articles`);
+    }
 }

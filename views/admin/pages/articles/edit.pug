@@ -1,0 +1,106 @@
+extend ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
+block main 
+    +alert-success(5000)
+    +alert-error(5000)
+
+    h1(class="mb-4") Chỉnh sửa bài viết
+
+    form(
+        action=`${prefixAdmin}/articles/edit/${articles.id}?_method=PATCH`
+        id='form-edit-article'
+        method='POST'
+        enctype="multipart/form-data"
+    )
+
+        div(class='form-group')
+            label(for='title') Tiêu đề
+            input(
+                type='text'
+                class='form-control'
+                id='title'
+                name='title'
+                value=articles.title
+            )
+
+        div(class='form-group')
+            label(for='product_category_id') Danh mục
+            select(
+                name="product_category_id"
+                id="product_category_id"
+                class="form-control"
+            )
+                option(value="") --- Chọn danh mục ---
+                if(category)
+                    +select-tree(category, 1, articles.article_category_id)
+
+        div(class='form-group')
+            label(for='description') Mô tả
+            textarea(
+                type='text'
+                class='form-control textarea-mce'
+                id='description'
+                name='description'
+                rows='5'
+            ) #{articles.description}
+        div(
+            class='form-group'
+            upload-image
+        )
+            label(for='thumbnail') Ảnh
+            input(
+                type='file'
+                class='form-control-file'
+                id='thumbnail'
+                name='thumbnail'
+                accept="image/*"
+                upload-image-input
+            )
+            img(
+                src=articles.thumbnail
+                upload-image-preview
+                class="image-preview"
+            )
+        div(class='form-group')
+            label(for='position') Vị trí
+            input(
+                type='number'
+                class='form-control'
+                id='thumbpositionnail'
+                name='position'
+                placeholder='Tự động tăng'
+                min='1'
+                value=articles.position
+            )
+        div(class='form-group form-check form-check-inline')
+            input(
+                type='radio'
+                class='form-check-input'
+                id='statusActive'
+                name='status'
+                value='active'
+                checked=(articles.status == "active" ? true : false)
+            )
+            label(for='statusActive' class='form-check-label') Hoạt động
+
+        div(class='form-group form-check form-check-inline')
+            input(
+                type='radio'
+                class='form-check-input'
+                id='statusInActive'
+                name='status'
+                value='inactive'
+                checked=(articles.status == "inactive" ? true : false)
+            )
+            label(for='statusInActive' class='form-check-label') Dừng hoạt động
+
+        div(class='form-group')
+            button(
+                type='submit'
+                class='btn btn-primary'
+            ) Cập nhật
+            
+
+    script(src="/admin/js/product.js") 

@@ -218,3 +218,22 @@ module.exports.changeStatus = async (req, res) => {
 
     res.redirect("back");
 }
+
+// [GET] /admin/articles/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const find = {
+            deleted: false,
+            _id: req.params.id
+        }
+
+        const data = await Article.findOne(find);
+        
+        res.render('admin/pages/articles/detail.pug', {
+            pageTitle: 'Chỉnh sửa bài viết',
+            data: data
+        });
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/articles`);     
+    }
+}

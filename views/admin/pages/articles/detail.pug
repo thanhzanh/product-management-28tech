@@ -1,0 +1,41 @@
+extend ../../layouts/default.pug 
+
+block main 
+
+    if(data.title)
+        h1(class="mb-4") Tiêu đề: #{data.title}
+
+    if(data.description)
+        div(class="mb-4") Mô tả: !{data.description}
+    else 
+        div(class="mb-4") Mô tả: Trống
+
+    if(data.position) 
+        div(class="mb-4") Vị trí: <b>#{data.position}</b>
+
+        
+    if(data.thumbnail) 
+        div(class="mb-4")
+            img(
+                src=data.thumbnail
+                style="width: 100px"
+                )
+    else
+        div(class="mb-4")
+            img(
+                src=data.title
+                title=data.title
+                style="width: 100px"
+            )
+
+    if(data.status)
+        div(class="mb-4") Trạng thái: 
+            if(data.status == "active")
+                span(class="badge badge-success") Hoạt động
+            if(data.status == "inactive")
+                span(class="badge badge-danger") Dừng hoạt động
+    
+    a(
+        href=`${prefixAdmin}/artilces/edit/${data.id}`
+        class="btn btn-warning btn-sm"  
+    ) Chỉnh sửa

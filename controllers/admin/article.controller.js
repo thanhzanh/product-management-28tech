@@ -113,7 +113,7 @@ module.exports.createPost = async (req, res) => {
     const data = new Article(req.body);
     data.save();
 
-    req.flash("success", "Tạo mới danh sách sản phẩm thành công");
+    req.flash("success", "Tạo mới bài viết thành công");
     
     res.redirect(`${systemConfig.prefixAdmin}/articles`);
 }
@@ -163,10 +163,10 @@ module.exports.editPatch = async (req, res) => {
             }
         );
 
-        req.flash("success", "Cập nhật danh sách bài viết thành công");
+        req.flash("success", "Cập nhật bài viết thành công");
 
     } catch (error) {
-        req.flash("error", "Cập nhật danh sách bài viết thất bại");
+        req.flash("error", "Cập nhật danh bài viết thất bại");
     }
     
     res.redirect(`${systemConfig.prefixAdmin}/articles`);
@@ -193,4 +193,28 @@ module.exports.deleteItem = async (req, res) => {
         req.flash("error", "Xóa bài viết thất bại");
         res.redirect(`${systemConfig.prefixAdmin}/articles`);
     }
+}
+
+// [PATCH] /admin/articles/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    const status = req.params.status;
+    const id = req.params.id;
+    
+    // Logs người update
+    const updatedByUser = {
+        account_id: res.locals.user.id,
+        updatedAt: new Date()
+    }
+
+    await Article.updateOne(
+        { _id: id }, 
+        { 
+            status: status,
+            $push: { updatedBy: updatedByUser }
+        }
+    );
+    
+    req.flash("success", "Cập nhật trạng thái thành công");
+
+    res.redirect("back");
 }

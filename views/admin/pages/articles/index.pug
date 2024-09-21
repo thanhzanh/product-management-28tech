@@ -5,6 +5,7 @@ include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug 
 include ../../mixins/pagination.pug 
 include ../../mixins/formChangeMulti.pug 
+include ../../mixins/sort.pug 
 
 
 block main 
@@ -25,8 +26,8 @@ block main
         .card-header Sắp xếp
         .card-body 
             .row 
-                .col-6 
-                    
+                .col-3 
+                    +sortArticle()
 
 
     .card.mb-3 
@@ -34,6 +35,7 @@ block main
         .card-body 
             .row 
                 .col-8 
+                    +form-change-multi(`${prefixAdmin}/articles/change-multi?_method=PATCH`)
                 .col-4 
                     a(
                         href=`${prefixAdmin}/articles/create`
@@ -42,9 +44,12 @@ block main
 
             table(
                 class="table table-hover table-sm"
+                checkbox-multi
             )
                 thead
                     tr 
+                        th 
+                            input(type="checkbox" name="checkall")
                         th STT 
                         th Hình ảnh 
                         th Tiêu đề

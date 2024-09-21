@@ -41,9 +41,18 @@ module.exports.index = async (req, res) => {
         countArticle
     );
 
+    // Sort
+    const sort = {}
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+        sort.position = "desc"; // Nếu không có sẽ sort theo position
+    }
+
     const records = await Article.find(find)
     .limit(objectPagination.limitItem)
-    .skip(objectPagination.skip);
+    .skip(objectPagination.skip)
+    .sort(sort);
 
     // Logs Người tạo
     for (const record of records) {
@@ -236,4 +245,38 @@ module.exports.detail = async (req, res) => {
     } catch (error) {
         res.redirect(`${systemConfig.prefixAdmin}/articles`);     
     }
+}
+
+// [PATCH] /admin/articles/change-multi
+module.exports.changeMulti = async (req, res) => {
+    
+    const ids = req.body.ids.split(',')
+    const typeChange = req.body.type;
+
+    switch (typeChange) {
+        case "active":
+            await Article.updateMany(
+                { _id: {$in: ids}}, 
+                {
+                    status: "active"
+                }
+            );
+            req.flash("success", "Cập nhật trạng thái thành công")
+            break;
+
+        case "inactive":
+            await Article.updateMany(
+                { _id: {$in: ids}}, 
+                {
+                    status: "inactive"
+                }
+            );
+            req.flash("success", "Cập nhật trạng thái thành công")
+            break;
+    
+        default:
+            break;
+    }
+    
+    res.redirect("back");
 }

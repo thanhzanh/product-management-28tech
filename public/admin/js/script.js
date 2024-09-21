@@ -190,10 +190,10 @@ if(uploadImage) {
 // End upload image
 
 // Sort
-const sort = document.querySelector('[sort]');
-if(sort) {
+const sort = document.querySelector('[sort]'); // Lấy tên tự đặt bên thẻ div
+if(sort) { // Nếu có thì ta mới thực hiện
 
-    let url = new URL(window.location.href);
+    let url = new URL(window.location.href); // lấy url của trình duyệt
 
     const sortSelect = document.querySelector('[sort-select]');
     const sortClear = document.querySelector('[sort-clear]');
@@ -201,7 +201,7 @@ if(sort) {
     // Sắp xếp
     sortSelect.addEventListener('change', (e) => {
        
-        const value = e.target.value;
+        const value = e.target.value; // lấy value của từng option trong select
         // Cú pháp destructuring
         const [sortKey, sortValue] = value.split('-');
 
@@ -220,7 +220,7 @@ if(sort) {
         window.location.href = url.href;
     });
 
-    // Thêm selected cho option
+    // Thêm selected cho option khi được chọn sẽ hiển thị
     const sortKey = url.searchParams.get('sortKey'); 
     const sortValue = url.searchParams.get('sortValue'); 
 

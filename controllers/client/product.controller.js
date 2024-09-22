@@ -11,8 +11,6 @@ module.exports.index =  async (req, res) => {
         item.priceNew = (item.price*(100 - item.discountPercentage)/100).toFixed(0)
     ))
 
-    console.log(products);
-
     res.render('client/pages/products/index.pug', {
         pageTitle: 'Trang danh sách sản phẩm',
         products: products
@@ -31,9 +29,6 @@ module.exports.detail =  async (req, res) => {
         }
         
         const product = await Product.findOne(find);
-
-        console.log(product);
-        
     
         res.render('./client/pages/products/detail', {
             pageTitle: product.title,

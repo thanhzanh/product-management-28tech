@@ -1,7 +1,7 @@
 extend ../../layouts/default.pug 
 
 block main 
-    if(role.permissions.includes("articles-view"))
+    if(role.permissions.includes("articles-category-view"))
 
         if(data.title)
             h1(class="mb-4") Danh mục: #{data.title}

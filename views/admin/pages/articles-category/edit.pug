@@ -3,7 +3,7 @@ include ../../mixins/select-tree.pug
 include ../../mixins/alert.pug
 
 block main 
-    if(role.permissions.includes("articles-edit"))
+    if(role.permissions.includes("articles-category-edit"))
 
         +alert-success(3000)
         +alert-error(3000)

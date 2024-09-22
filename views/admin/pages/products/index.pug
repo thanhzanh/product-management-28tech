@@ -40,7 +40,7 @@ block main
                         .col-8
                             +form-change-multi(`${prefixAdmin}/products/change-multi?_method=PATCH`)
                         .col-4 
-                            if(role.permissions.includes("products-edit"))
+                            if(role.permissions.includes("products-create"))
                                 a(
                                     href=`${prefixAdmin}/products/create`
                                     class="btn btn-outline-success"

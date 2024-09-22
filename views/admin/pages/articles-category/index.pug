@@ -7,77 +7,79 @@ include ../../mixins/formChangeMulti.pug
 include ../../mixins/sort.pug 
 include ../../mixins/momentDateTime.pug 
 
-block main 
-    +alert-success(3000)
-    +alert-error(3000)
+block main
+    if(role.permissions.includes("articles-category-view"))
+    
+        +alert-success(3000)
+        +alert-error(3000)
 
-    h1 Trang danh mục bài viết
+        h1 Trang danh mục bài viết
 
-    .card-mb-3 
-    .card-header 
-    .card-body 
-        .row 
-            .col-6 
-                +filterStatus(filterStatus)
-            .col-6 
-                +search(keyword)
-
-    .card-mb-3 
-    .card-header 
-    .card-body 
-        .row 
-            .col-3 
-                +sortCategory()
-
-    .card.mb-3 
-        .card-header Danh sách 
+        .card-mb-3 
+        .card-header 
         .card-body 
             .row 
-                .col-8 
-                    +form-change-multi(`${prefixAdmin}/articles-category/change-multi?_method=PATCH`)
-                .col-4 
-                    a(
-                        href=`${prefixAdmin}/articles-category/create`
-                        class="btn btn-outline-success "
-                    ) + Thêm mới danh mục
+                .col-6 
+                    +filterStatus(filterStatus)
+                .col-6 
+                    +search(keyword)
 
-            table(
-                class="table table-hover table-sm"
-                checkbox-multi
-            )
-                thead 
-                    tr 
-                        th 
-                            input(type="checkbox" name="checkall")
-                        th STT 
-                        th Hình ảnh 
-                        th Tiêu đề
-                        th Vị trí
-                        th Trạng thái 
-                        th Người tạo
-                        th Người cập nhật
-                        th Hành động
+        .card-mb-3 
+        .card-header 
+        .card-body 
+            .row 
+                .col-3 
+                    +sortCategory()
 
-                tbody 
-                    +table-tree-articles-category(records, 1)
+        .card.mb-3 
+            .card-header Danh sách 
+            .card-body 
+                .row 
+                    .col-8 
+                        +form-change-multi(`${prefixAdmin}/articles-category/change-multi?_method=PATCH`)
+                    .col-4 
+                        a(
+                            href=`${prefixAdmin}/articles-category/create`
+                            class="btn btn-outline-success "
+                        ) + Thêm mới danh mục
 
-    //- Change status
-    form(
-        action=""
-        method="POST"
-        data-path=`${prefixAdmin}/articles-category/change-status`
-        id="form-change-status"
-    )
+                table(
+                    class="table table-hover table-sm"
+                    checkbox-multi
+                )
+                    thead 
+                        tr 
+                            th 
+                                input(type="checkbox" name="checkall")
+                            th STT 
+                            th Hình ảnh 
+                            th Tiêu đề
+                            th Vị trí
+                            th Trạng thái 
+                            th Người tạo
+                            th Người cập nhật
+                            th Hành động
 
-    //- Delete
-    form(
-        action=""
-        method="POST"
-        id="form-delete-item"
-        data-path=`${prefixAdmin}/articles-category/delete`
-    )
+                    tbody 
+                        +table-tree-articles-category(records, 1)
 
-    script(src="/admin/js/script.js")
-    script(src="/admin/js/product.js")
-    script(src="/admin/js/role.js")
+        //- Change status
+        form(
+            action=""
+            method="POST"
+            data-path=`${prefixAdmin}/articles-category/change-status`
+            id="form-change-status"
+        )
+
+        //- Delete
+        form(
+            action=""
+            method="POST"
+            id="form-delete-item"
+            data-path=`${prefixAdmin}/articles-category/delete`
+        )
+
+        script(src="/admin/js/script.js")
+        script(src="/admin/js/product.js")
+        script(src="/admin/js/role.js")
                 

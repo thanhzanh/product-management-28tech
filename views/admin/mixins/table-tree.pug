@@ -113,22 +113,38 @@ mixin table-tree-articles-category(items, level = 1)
                     name="position"
                 )
             td
-                if(p.status === "active")
-                    a(
-                        href="javascript:;"
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-success"
-                    ) Hoạt động
+                if(role.permissions.includes("articles-category-edit"))
+                    if(p.status === "active")
+                        a(
+                            href="javascript:;"
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        a(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
                 else 
-                    a(
-                        href="javascript:;" 
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-danger"
-                    ) Dừng hoạt động
+                    if(p.status === "active")
+                        a(
+                            href="javascript:;"
+                            data-status= p.status 
+                            data-id= p.id
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        a(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
             td 
                 p #{p.accountFullName}
             td 
@@ -137,17 +153,17 @@ mixin table-tree-articles-category(items, level = 1)
                     p #{updateByUser.accountFullName}
                     p #{moment(updateByUser.updatedAt).format('DD/MM/YYYY HH:mm')}
             td 
-                if(role.permissions.includes("articles-view"))
+                if(role.permissions.includes("articles-category-view"))
                     a(
                         href=`${prefixAdmin}/articles-category/detail/${p.id}`
                         class="btn btn-secondary btn-sm"  
                     ) Chi tiết
-                if(role.permissions.includes("articles-edit"))
+                if(role.permissions.includes("articles-category-edit"))
                     a(
                         href=`${prefixAdmin}/articles-category/edit/${p.id}`
                         class="btn btn-warning btn-sm"  
                     ) Sửa 
-                if(role.permissions.includes("articles-delete"))
+                if(role.permissions.includes("articles-category-delete"))
                     button(
                         class="btn btn-danger btn-sm ml-1"
                         button-delete
@@ -180,22 +196,38 @@ mixin table-tree-articles(items, level = 1)
                     name="position"
                 )
             td
-                if(p.status === "active")
-                    a(
-                        href="javascript:;"
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-success"
-                    ) Hoạt động
+                if(role.permissions.includes("articles-edit"))
+                    if(p.status === "active")
+                        a(
+                            href="javascript:;"
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        a(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            button-change-status
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
                 else 
-                    a(
-                        href="javascript:;" 
-                        data-status= p.status 
-                        data-id= p.id
-                        button-change-status
-                        class="badge badge-danger"
-                    ) Dừng hoạt động
+                    if(p.status === "active")
+                        span(
+                            href="javascript:;"
+                            data-status= p.status 
+                            data-id= p.id
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        span(
+                            href="javascript:;" 
+                            data-status= p.status 
+                            data-id= p.id
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
 
             td 
                 p #{p.accountFullName}
@@ -204,22 +236,25 @@ mixin table-tree-articles(items, level = 1)
                 if(user) 
                     p #{user.accountFullName}
                     p #{moment(user.updatedAt).format('DD/MM/YYYY HH:mm')}
-            td 
-                a(
-                    href=`${prefixAdmin}/articles/detail/${p.id}`
-                    class="btn btn-secondary btn-sm"  
-                ) Chi tiết
+            td
+                if(role.permissions.includes("articles-view"))
+                    a(
+                        href=`${prefixAdmin}/articles/detail/${p.id}`
+                        class="btn btn-secondary btn-sm"  
+                    ) Chi tiết
+                
+                if(role.permissions.includes("articles-edit"))
+                    a(
+                        href=`${prefixAdmin}/articles/edit/${p.id}`
+                        class="btn btn-warning btn-sm"  
+                    ) Sửa 
 
-                a(
-                    href=`${prefixAdmin}/articles/edit/${p.id}`
-                    class="btn btn-warning btn-sm"  
-                ) Sửa 
-
-                button(
-                    class="btn btn-danger btn-sm ml-1"
-                    button-delete
-                    data-id=p.id
-                ) Xóa
+                if(role.permissions.includes("articles-delete"))
+                    button(
+                        class="btn btn-danger btn-sm ml-1"
+                        button-delete
+                        data-id=p.id
+                    ) Xóa
         
         if(p.children && p.children.length > 0)
                 +table-tree-articles(p.children, level + 1)

@@ -101,6 +101,15 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products-category/create
 module.exports.createPost = async (req, res) => {
+    // Check phân quyền truy cập bằng token
+    // const permissions = res.locals.role.permissions;
+    // if(permissions.includes('products-category-create')) {
+    //     console.log("Không có quyền");       
+    // } else {
+    //     res.send("403");
+    //     return;
+    // }
+
     if(req.body.position == "") {
         const count = await ProductCategory.countDocuments();
         req.body.position = count + 1;
@@ -261,10 +270,7 @@ module.exports.edit = async (req, res) => {
 
         const records = await ProductCategory.find({deleted: false});
 
-        const newRecords = createTreeHelper.treeChildren(records);    
-
-        console.log(records);
-        
+        const newRecords = createTreeHelper.treeChildren(records);            
 
         res.render('admin/pages/products-category/edit.pug', {
             pageTitle: 'Chỉnh sửa danh mục sản phẩm',

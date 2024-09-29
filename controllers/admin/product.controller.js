@@ -20,7 +20,7 @@ const createTreeHelper = require('../../helper/createTree');
 
 // [PATCH] /admin/products/changeStatus/:status/:id => :status. :id là router động
 module.exports.changeStatus = async (req, res) => {
-    console.log(req.params);
+    // console.log(req.params);
     const status = req.params.status;
     const id = req.params.id;
 
@@ -133,7 +133,7 @@ module.exports.index = async (req, res) => {
 
     // Gọi lại hàm filerStatus import ở trên từ file filerStatus.js
     const filterStatus = filterStatusHelper(req.query);
-    console.log(filterStatus)
+    // console.log(filterStatus);
 
     // Lọc data từ database
     let find = {
@@ -201,7 +201,7 @@ module.exports.index = async (req, res) => {
         }
 
         // Lấy ra thông tin người cập nhật gần nhất
-        console.log(product.updatedBy);
+        // console.log(product.updatedBy);
         const updatedBy = product.updatedBy[product.updatedBy.length-1];
         // const updatedBy = product.updatedBy.slice(-1)[0];
         if(updatedBy) {
@@ -257,7 +257,7 @@ module.exports.createPost = async (req, res) => {
         req.body.position = parseInt(req.body.position);
     } 
 
-    console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
+    // console.log(req.body); // Lấy dữ liệu truyền từ form qua controller
 
     //Lấy ra người tạo là ai
     // res.locals.user => toàn cục
@@ -351,7 +351,7 @@ module.exports.detail = async (req, res) => {
         
         const product = await Product.findOne(find);
 
-        console.log(product);
+        // console.log(product);
         
     
         res.render('admin/pages/products/detail', {

@@ -51,7 +51,7 @@ module.exports.createPost = async (req, res) => {
         email: req.body.email,
         deleted: false
     });
-    console.log(emailExist);
+    
     if(emailExist) {
         req.flash("error", `Email ${req.body.email} đã tồn tại`);
         res.redirect('back');

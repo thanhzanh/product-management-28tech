@@ -1,0 +1,12 @@
+extends ../../layouts/default.pug 
+include ../../mixins/momentDateTime.pug
+
+block main
+    .container 
+        .row 
+            .col-12 
+                if(article)
+                h2 Tiêu đề:  #{article.title} 
+                p Mô tả: !{article.description}
+                p Ngày tạo: 
+                    +momentDate(article.createdBy.createdAt)

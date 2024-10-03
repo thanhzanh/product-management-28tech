@@ -13,11 +13,11 @@ block main
                 .col-8 
                     .article-item 
                         .inner-image
-                            a(href=`/articles/detail/${item.slug}`)
+                            a(href=`/article/detail/${item.slug}`)
                                 img(src=item.thumbnail, alt=item.title)
                         .inner-content 
                             h3.inner-title 
-                                a(href=`/articles/detail/${item.slug}`) #{item.title}
+                                a(href=`/article/detail/${item.slug}`) #{item.title}
                             .inner-description !{item.description}
                             .inner-view-more
                                 +momentDate(item.createdBy.createdAt)

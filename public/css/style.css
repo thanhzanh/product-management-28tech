@@ -241,7 +241,13 @@
     margin-bottom: 10px;
 }
 
-
+.article-item .inner-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 /* End Article */

@@ -1,0 +1,27 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug
+include ../../mixins/momentDateTime.pug
+
+block main
+    .container.my-3 
+        .row 
+            .col-12 
+                +box-head(pageTitle) 
+    
+        .row 
+            each item in article 
+                .col-8 
+                    .article-item 
+                        .inner-image
+                            a(href=`/articles/detail/${item.slug}`)
+                                img(src=item.thumbnail, alt=item.title)
+                        .inner-content 
+                            h3.inner-title 
+                                a(href=`/articles/detail/${item.slug}`) #{item.title}
+                            .inner-description !{item.description}
+                            .inner-view-more
+                                +momentDate(item.createdBy.createdAt)
+
+
+
+        

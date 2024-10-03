@@ -213,3 +213,35 @@
     font-weight: 700;
     margin: 0 5px;
 }
+
+/* Article */
+.article-item {
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.article-item .inner-image img {
+    width: 250px;
+    height: auto;
+}
+
+.article-item .inner-content {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.article-item .inner-title {
+    white-space: pre-wrap;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+
+
+
+/* End Article */

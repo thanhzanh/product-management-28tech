@@ -1,13 +1,26 @@
 const Role = require('../../models/role.model');
 const Account = require('../../models/account.model');
 
-
+const filterStatusHelper = require('../../helper/filterStatus');
+const searchHelper = require('../../helper/search');
 const systemConfig = require('../../config/system');
 
 // [GET] /admin/roles
 module.exports.index = async (req, res) => {
 
     let find = {deleted: false};
+
+    // Kiểm tra nếu có gửi lên status thì thêm status vào find ở trên
+    if(req.query.status) {
+        find.status = req.query.status;
+    }
+
+    // Search
+    const objectSearch = searchHelper(req.query);
+    if(objectSearch.regex) {
+        find.title = objectSearch.regex;
+    }
+    // End Search
 
     const records = await Role.find(find);
 
@@ -25,10 +38,12 @@ module.exports.index = async (req, res) => {
         }
       
     }
+    // End Logs người chỉnh sửa
 
     res.render('admin/pages/roles/index.pug', {
         pageTitle: 'Nhóm quyền',
-        records: records
+        records: records,
+        keyword: objectSearch
     });
 }
 
@@ -97,9 +112,10 @@ module.exports.editPatch = async (req, res) => {
 
         req.flash("success", "Cập nhật nhóm quyền thành công!");
         
-        res.redirect('back');
+        res.redirect(`${systemConfig.prefixAdmin}/roles`);
     } catch (error) {
         req.flash("error", "Cập nhật nhóm quyền không thành công!");
+        
     }
     
 }

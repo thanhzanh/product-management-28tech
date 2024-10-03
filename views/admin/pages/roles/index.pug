@@ -1,5 +1,7 @@
 extend ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
 include ../../mixins/momentDateTime.pug
 
 block main 
@@ -9,6 +11,14 @@ block main
         +alert-error(5000)
 
         h1(class="mb-4") Nhóm quyền
+
+        .card-mb-3 
+            .card-header Tìm kiếm 
+            .card-body 
+                .row 
+                    .col-6 
+                        +search()
+
 
         .card-mb-3 
             .card-header Danh sách
@@ -63,10 +73,6 @@ block main
                                                     button-delete
                                                     data-id=item.id
                                                 ) Xóa
-
-                            else 
-                                tr 
-                                    td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.
 
         form(
             action=""

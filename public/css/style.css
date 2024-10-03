@@ -127,14 +127,22 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    background: #ccc;
+    background-color: #000;
+    color: #fff;
     min-width: 150px;
     display: none;
 }
 
 .sub-menu ul li {
     padding: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ffb822;
+    text-decoration: none;
+}
+
+.sub-menu ul li:hover  {
+    color: #000;
+    background-color: #ffb822;
+    text-decoration: none;
 }
 
 .sub-menu:hover > ul {

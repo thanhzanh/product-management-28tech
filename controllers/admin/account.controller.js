@@ -6,12 +6,31 @@ const md5 = require('md5');
 
 const systemConfig = require('../../config/system');
 
+const filterStatusHelper = require('../../helper/filterStatus');
+const searchHelper = require('../../helper/search');
+
 // [GET] /admin/accounts
 
 module.exports.index = async (req, res) => {
     let find = {
         deleted: false
     };
+
+    // Tìm xem có gửi lên yêu cầu status không, nếu có thì thêm vào find
+    if(req.query.status) {
+        find.status = req.query.status;
+    }
+
+    // Filterstatus
+    const filterStatus = filterStatusHelper(req.query);
+    // End Filterstatus
+
+    // Search
+    const objectSearch = searchHelper(req.query);
+    if(objectSearch.regex) {
+        find.fullName = objectSearch.regex;
+    }
+    // End Search
 
     // select: dùng lấy ra những cái mong muốn(-a lấy ra tất cả ngoại trừ a)
     const records = await Account.find(find).select("-password -token");
@@ -25,11 +44,12 @@ module.exports.index = async (req, res) => {
         // Thêm key role cho record
         record.role = role;
     }
-    
 
-    res.render("admin/pages/accounts/index", {
+    res.render("admin/pages/accounts/index.pug", {
         pageTitle: "Danh sách tài khoản",
-        records: records
+        records: records,
+        filterStatus: filterStatus,
+        keyword: objectSearch
     });
 }
 

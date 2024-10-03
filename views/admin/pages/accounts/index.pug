@@ -1,5 +1,7 @@
 extend ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
 
 block main 
     if(role.permissions.includes("accounts-view"))
@@ -9,6 +11,15 @@ block main
         +alert-error(5000)
 
         h1(class="mb-4") Danh sách tài khoản
+
+        .card-mb-3 
+            .card-header Bộ lọc và tìm kiếm theo tên
+            .card-body 
+                .row 
+                    .col-6 
+                        +filterStatus(filterStatus)
+                    .col-6 
+                        +search()
 
         .card-mb-3 
             .card-header Danh sách
@@ -100,3 +111,4 @@ block main
         )
 
         script(src="/admin/js/account.js")
+        script(src="/admin/js/script.js")

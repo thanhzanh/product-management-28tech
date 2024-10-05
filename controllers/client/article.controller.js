@@ -25,18 +25,6 @@ module.exports.detail = async (req, res) => {
 
     const article = await Article.findOne(find);
 
-    // if(article.article_category_id) {
-    //     const category = await ArticleCategory.find({
-    //         _id: article.article_category_id,
-    //         status: "active",
-    //         deleted: false
-    //     });
-
-    //     article.category = category;
-    // }
-    
-    console.log(article);
-
     res.render('client/pages/articles/detail', {
         pageTitle: 'Trang chi tiết bài viết',
         article: article

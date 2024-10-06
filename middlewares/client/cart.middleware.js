@@ -18,10 +18,20 @@ module.exports.cartId = async (req, res, next) => {
         });
 
     } else {
-        // Lấy ra thôi
+        // Lấy ra giỏ hàng
+        const cart = await Cart.findOne({
+            _id: req.cookies.cartId
+        });
+
+        // lấy ra số lượng sản phẩm
+        const totalQuantity = cart.products.reduce((sum, item) => sum + item.quantity, 0);
+
+        // thêm số lượng vào cart
+        cart.totalQuantity = totalQuantity;
+        
+        res.locals.miniCart = cart;
     }
-    
-    
+     
     next();
     
 }

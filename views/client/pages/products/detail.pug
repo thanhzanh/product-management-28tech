@@ -1,7 +1,10 @@
-extend ../../layouts/default.pug 
+extends ../../layouts/default.pug 
 include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
 
 block main 
+    +alert-success(2000)
+
     //- Thêm class để css
     .product-detail 
         .container.my-5 
@@ -53,3 +56,5 @@ block main
                 .col-12 
                     +box-head("Mô tả sản phẩm")
                     .inner-desc !{product.description}
+    
+    script(src="/js/script.js") 

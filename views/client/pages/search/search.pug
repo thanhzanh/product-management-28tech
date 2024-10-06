@@ -5,8 +5,9 @@ include ../../mixins/product-layout.pug
 block main
     .container.my-3 
         .row 
-            .col-12 
-                +box-head(pageTitle) 
+            .col-12
+                if(countProducts) 
+                    h2 Kết quả tìm kiếm: #{countProducts} Sản phẩm
     
         if(products.length)
             +product-grid(products)

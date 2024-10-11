@@ -1,33 +1,71 @@
 .sider
     .inner-menu 
         ul 
-            li 
-                a(href=`${prefixAdmin}/dashboard`) Tổng quan 
+            li
+                a(href=`${prefixAdmin}/dashboard`)
+                    .inner-icon
+                        i(class="fa-solid fa-house inner-icon-dashboard")
+                    span Dashboard 
             
             if(role.permissions.includes("products-category-view"))
                 li 
-                    a(href=`${prefixAdmin}/products-category`) Danh mục sản phẩm
+                    a(href=`${prefixAdmin}/products-category`) 
+                        .inner-icon
+                            i(class="fa-solid fa-store inner-icon-dashboard")
+                        span Product Category
 
             if(role.permissions.includes("products-view"))             
                 li 
-                    a(href=`${prefixAdmin}/products`) Danh sách sản phẩm
+                    a(href=`${prefixAdmin}/products`)
+                        .inner-icon
+                            i(class="fa-solid fa-lock inner-icon-dashboard")
+                        span Products
 
             if(role.permissions.includes("roles-view"))
                 li 
-                    a(href=`${prefixAdmin}/roles`) Nhóm quyền
+                    a(href=`${prefixAdmin}/roles`)
+                        .inner-icon
+                            i(class="fa-solid fa-layer-group inner-icon-dashboard")
+                        span Group rule
 
             if(role.permissions.includes("roles-permissions"))
                 li 
-                    a(href=`${prefixAdmin}/roles/permissions`) Phân quyền
+                    a(href=`${prefixAdmin}/roles/permissions`)
+                        .inner-icon
+                            i(class="fa-solid fa-lock inner-icon-dashboard")
+                        span Permissions
 
             if(role.permissions.includes("accounts-view"))        
                 li 
-                    a(href=`${prefixAdmin}/accounts`) Danh sách tài khoản
+                    a(href=`${prefixAdmin}/accounts`)
+                        .inner-icon
+                            i(class="fa-solid fa-user inner-icon-dashboard")
+                        span Accounts
 
             if(role.permissions.includes("articles-category-view"))
                 li
-                    a(href=`${prefixAdmin}/articles-category`) Danh mục bài viết
+                    a(href=`${prefixAdmin}/articles-category`)
+                        .inner-icon
+                            i(class="fa-solid fa-signal inner-icon-dashboard") 
+                        span Article Category
 
             if(role.permissions.includes("articles-view")) 
                 li
-                    a(href=`${prefixAdmin}/articles`) Danh sách bài viết
+                    a(href=`${prefixAdmin}/articles`)
+                        .inner-icon
+                            i(class="fa-solid fa-shield inner-icon-dashboard")
+                        span Articles
+            
+            
+
+            
+
+            
+
+            
+
+            
+
+            
+
+            

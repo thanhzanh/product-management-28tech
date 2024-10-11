@@ -1,16 +1,43 @@
 header.header 
     .container-fluid 
-        .row.align-items-center 
-            .col-3 
-                a(href=`${prefixAdmin}/dashboard` class="admin") ADMIN
+        .row.align-items-center.inner-header 
+            //- .col-3 
+            //-     a(href=`${prefixAdmin}/dashboard` class="admin") ADMIN
 
-            .col-9
-                div(class="text-right")
-                    a(
-                        href=`${prefixAdmin}/my-account`
-                        class="btn btn-primary btn-sm mr-2"
-                    ) #{user.fullName}
-                    a(
-                        href=`${prefixAdmin}/auth/logout`
-                        class="btn btn-danger btn-sm"
-                    ) Đăng xuất
+            //- .col-9
+            //-     div(class="text-right")
+            //-         a(
+            //-             href=`${prefixAdmin}/my-account`
+            //-             class="btn btn-primary btn-sm mr-2"
+            //-         ) #{user.fullName}
+            //-         a(
+            //-             href=`${prefixAdmin}/auth/logout`
+            //-             class="btn btn-danger btn-sm"
+            //-         ) Đăng xuất
+
+            .col-2
+                .inner-logo 
+                    a(href="#" class="admin") #{user.fullName}
+
+            .col-2
+                .inner-account
+                    .inner-img 
+                        img(src=user.avatar alt="avatar")
+                    ul 
+                        li 
+                            .inner-icon
+                                i(class="fa-solid fa-chevron-down inner-icon-dashboard")
+
+                    .sub-info-user 
+                        ul.inner-list-user
+                            li
+                                a(href=`${prefixAdmin}/my-account`)
+                                    .inner-icon
+                                        i(class="fa-solid fa-user-check inner-icon-dashboard") 
+                                    span My account 
+                            li
+                                a(href=`${prefixAdmin}/auth/logout`)
+                                    .inner-icon
+                                        i(class="fa-solid fa-right-from-bracket inner-icon-dashboard") 
+                                    span Log out
+                            

@@ -292,3 +292,21 @@ if(buttonChangeStatus.length > 0) {
 }
 
 // End Change status
+
+// Click user
+let account = document.querySelector('.inner-account');
+let subListInfoUser = document.querySelector('.sub-info-user');
+if(account) {
+    account.addEventListener("click", () => {
+        if(subListInfoUser) {
+            if(subListInfoUser.style.display === 'block') {
+                subListInfoUser.style.display = 'none';
+            } else {
+                subListInfoUser.style.display = 'block';
+            }
+        };
+        
+    });
+}
+
+// End click user

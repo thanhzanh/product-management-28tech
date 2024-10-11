@@ -13,7 +13,7 @@ const route = require('./routes/client/index.route');
 const routeAdmin = require('./routes/admin/index.route');
 const database = require('./config/database');
 
-const systemConfig = require('./config/system');
+const systemConfig = require('./config/system'); 
 
 database.connect();
 
@@ -39,9 +39,10 @@ app.use(flash());
 app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 // End TinyMCE
 
-// Use pug
+// Use pug: npm i pug
 app.set('views',`${__dirname}/views`);
 app.set('view engine', 'pug');
+// End use pug
 
 // App Local Variables: tạo ra biến toàn cục
 app.locals.prefixAdmin = systemConfig.prefixAdmin;

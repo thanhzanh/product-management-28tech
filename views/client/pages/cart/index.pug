@@ -4,14 +4,14 @@ include ../../mixins/alert.pug
 
 block main 
     
-    +alert-success(3000)
-    +alert-error(3000)
+    +alert-error(2000)
+    +alert-success(2000)
 
     .container.my-3 
         .row 
             .col-12 
                 +box-head("Giỏ hàng")
-
+        
         .row 
             .col-12 
                 table(class="table table-bordered")
@@ -46,7 +46,7 @@ block main
                                     td #{item.totalPrice} $
                                     td 
                                         a(
-                                            href=`/cart/delete/:id`
+                                            href=`/cart/delete/${item.product_id}`
                                             class="btn btn-danger"
                                         ) Xóa
                         else 

@@ -1,20 +1,47 @@
-mixin alert-success(time)
-    - if (messages.success)
-        .message.info
-            p(
-                class="alert alert-success"
-                data-time=time
-                show-alert
-            ) !{messages.success}
+//- mixin alert-success(time)
+//-     - if (messages.success)
+//-         .message.info
+//-             p(
+//-                 class="alert alert-success"
+//-                 data-time=time
+//-                 show-alert
+//-             ) !{messages.success}
             //- <span close-alert>X</span>
             
 
-mixin alert-error(time)
-    - if (messages.error)
-        .message.info
-            p(
-                class="alert alert-danger"
-                data-time=time
-                show-alert
-            ) !{messages.error} 
+//- mixin alert-error(time)
+//-     - if (messages.error)
+//-         .message.info
+//-             p(
+//-                 class="alert alert-danger"
+//-                 data-time=time
+//-                 show-alert
+//-             ) !{messages.error} 
             //- <span close-alert>X</span>
+
+mixin alert-success(time)
+  if messages.success
+    script.
+      setTimeout(() => {
+        Swal.fire({
+          title: "Thành công!",
+          text: "#{messages.success}",
+          icon: "success",
+          timer: #{time},
+          showConfirmButton: false
+        });
+      }, 100);
+
+mixin alert-error(time)
+  if messages.error
+    script.
+      setTimeout(() => {
+        Swal.fire({
+          title: "Lỗi!",
+          text: "#{messages.error}",
+          icon: "error",
+          timer: #{time},
+          showConfirmButton: false
+        });
+      }, 100);
+

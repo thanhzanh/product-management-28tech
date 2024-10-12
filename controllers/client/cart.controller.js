@@ -117,3 +117,31 @@ module.exports.delete = async (req, res) => {
     
     res.redirect('back');
 };
+
+// [GET] /cart/delete/:productId/:quantity
+module.exports.update = async (req, res) => {
+    // lấy productId truyền từ params qua và cartId
+    const cartId = req.cookies.cartId; // giỏ
+    const productId = req.params.productId; // id sản phẩm
+    const quantity = req.params.quantity; // số lượng sản phẩm
+
+    // trả ra object gồm productId và quantity
+    // console.log(req.params); 
+
+    // update lại số lượng
+    await Cart.updateOne(
+        {
+            _id: cartId,
+            "products.product_id": productId
+        },
+        {
+            $set: {
+                "products.$.quantity": quantity
+            }
+        }
+    );
+    
+    req.flash("success", "Cập nhật số lượng thành công");
+    
+    res.redirect('back');
+};

@@ -106,11 +106,37 @@ module.exports.order = async (req, res) => {
 
 // [GET] /checkout/success/:orderId
 module.exports.success = async (req, res) => {
-    const orderId = req.params.id;
-    console.log(orderId);
+    // const orderId = req.params.orderId;
     
+    // Lấy ra giỏ hàng
+    const order = await Order.findOne({
+        _id: req.params.orderId
+    });
+
+    // Lấy ra thông tin sản phẩm
+    // Duyệt qua từng sản phẩm
+    for(const product of order.products) {
+        const productInfo = await Product.findOne({
+            _id: product.product_id
+        }).select("title thumbnail");
+
+        // Thêm productInfo vào product
+        product.productInfo = productInfo;
+
+        // Gía mới của sản phẩm khi nhân giá gốc và giảm giá
+        product.priceNew = productHelper.priceNewProduct(product);
+
+        // Tổng tiền của từng sản phẩm
+        product.totalPrice = product.priceNew * product.quantity;
+    }
+
+    // tổng tiền của đơn hàng
+    order.totalPrice = order.products.reduce((sum, item) => sum + item.totalPrice, 0);
+ 
+    // console.log(order);   
 
     res.render('client/pages/checkout/success', {
-        pageTitle: "Đặt hàng thành công"
-    })
+        pageTitle: "Đặt hàng thành công",
+        order: order
+    });
 }

@@ -36,3 +36,14 @@ module.exports.loginPost = async (req, res, next) => {
 
     next();
 }
+
+module.exports.forgotPasswordPost = async (req, res, next) => {
+
+    if(!req.body.email) {
+        req.flash('error', 'Vui lòng nhập email!');
+        res.redirect('back');
+        return; // Thoát không thực thi những dòng code bên dưới
+    }
+
+    next();
+}

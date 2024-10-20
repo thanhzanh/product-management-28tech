@@ -1,5 +1,6 @@
 const categoryMiddleware = require('../../middlewares/client/category.middleware');
 const cartMiddleware = require('../../middlewares/client/cart.middleware');
+const userMiddleware = require('../../middlewares/client/user.middleware');
 
 const productRoutes = require('./product.route');
 const homeRoutes = require('./home.route');
@@ -13,6 +14,8 @@ module.exports = (app) => {
     app.use(categoryMiddleware.category); // Luôn chạy vào categoryMiddleware.category đầu
 
     app.use(cartMiddleware.cartId); // Luôn chạy vào cartMiddleware.cartId đầu
+
+    app.use(userMiddleware.infoUser); // (tất cả các trang điều có) luôn chạy vào userMiddleware.infoUser
 
     app.use('/', homeRoutes);
 

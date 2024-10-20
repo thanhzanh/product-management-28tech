@@ -81,3 +81,11 @@ module.exports.loginPost = async (req, res) => {
     // quay lại trang chủ
     res.redirect('/');
 }
+
+// [GET] /user/logout
+module.exports.logout = async (req, res) => {
+    // xóa cookies là xong
+    res.clearCookie("tokenUser");
+    // quay lại trang home
+    res.redirect('/');
+}
